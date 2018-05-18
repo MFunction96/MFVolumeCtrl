@@ -6,7 +6,6 @@ using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.ServiceProcess;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace MFVolumeService
 {
@@ -73,23 +72,25 @@ namespace MFVolumeService
         /// </summary>
         protected override void OnStop()
         {
+            ListenThread.Interrupt();
+            Listener.Stop();
         }
         /// <summary>
         /// 
         /// </summary>
-        public async void Listen()
+        public void Listen()
         {
-            for (; ; )
+            while (Settings.Enabled)
             {
                 try
                 {
                     var client = Listener.AcceptTcpClient();
-                    await Receive(client.GetStream());
+                    Receive(client.GetStream());
                     client.Close();
                 }
                 catch (Exception e)
                 {
-                    await ErrorCtrl.WriteError(e);
+                    ErrorCtrl.WriteError(e);
                 }
             }
         }
@@ -98,14 +99,19 @@ namespace MFVolumeService
         /// </summary>
         /// <param name="stream"></param>
         /// <returns></returns>
-        protected async Task Receive(NetworkStream stream)
+        protected void Receive(NetworkStream stream)
         {
             var buffer = new byte[stream.Length];
-            await stream.ReadAsync(buffer, 0, (int)stream.Length);
-            var ptr = Marshal.AllocHGlobal((int)stream.Length);
-            Marshal.Copy(buffer, 0, ptr, buffer.Length);
-            Services = Marshal.PtrToStructure<List<ServiceModel>>(ptr);
-            Marshal.FreeHGlobal(ptr);
+            stream.ReadAsync(buffer, 0, (int)stream.Length);
+            try
+            {
+                var ptr = Marshal.UnsafeAddrOfPinnedArrayElement(buffer, 0);
+                Services = Marshal.PtrToStructure<List<ServiceModel>>(ptr);
+            }
+            catch (Exception e)
+            {
+                ErrorCtrl.WriteError(e);
+            }
         }
     }
 }

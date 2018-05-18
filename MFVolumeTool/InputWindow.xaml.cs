@@ -10,22 +10,26 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace MFVolumePanel
+namespace MFVolumeTool
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for InputWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class InputWindow : Window
     {
-        public MainWindow()
+        public InputWindow()
         {
             InitializeComponent();
         }
 
-        private void TogBtn_Checked(object sender, RoutedEventArgs e)
+        private void BtnConfirm_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtnCancal_Click(object sender, RoutedEventArgs e)
         {
 
         }

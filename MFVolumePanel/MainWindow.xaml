@@ -5,8 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MFVolumePanel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
+        Title="MainWindow" Height="259.067" Width="311.6" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Grid Margin="0,0,-0.4,-0.4">
+        <Grid Margin="10,10,10,0" Height="171.2" VerticalAlignment="Top">
+            <Label Content="服务状态：" Margin="61.999,10,62.008,0" VerticalAlignment="Top"/>
+            <Label Content="激活服务器：" Margin="50.266,71.92,62.008,0" VerticalAlignment="Top"/>
+            <Label Content="自激活状态：" Margin="50.266,40.96,62.008,0" VerticalAlignment="Top"/>
+            <Label Content="查询间隔：" Margin="61.999,102.88,62.008,0" VerticalAlignment="Top"/>
+            <Label Content="查询次数：" Margin="61.999,133.84,62.008,0" VerticalAlignment="Top"/>
+        </Grid>
+        <Grid Margin="10,176,10,0" Height="43" VerticalAlignment="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <ToggleButton x:Name="TogBtn" Content="" Grid.Column="1" Margin="10,10,10,13.44" d:LayoutOverrides="Height" Checked="TogBtn_Checked"/>
+            <ComboBox x:Name="CbGroup" Margin="10,10,10,11.44" d:LayoutOverrides="Height"/>
+        </Grid>
+
     </Grid>
 </Window>

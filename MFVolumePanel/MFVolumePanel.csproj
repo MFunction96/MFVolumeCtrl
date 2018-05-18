@@ -93,5 +93,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MFVolumeCtrl\MFVolumeCtrl.csproj">
+      <Project>{f4327b5f-30da-46e4-9d09-b4cf1bb1dc05}</Project>
+      <Name>MFVolumeCtrl</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
