@@ -88,6 +88,15 @@ namespace MFVolumeCtrl.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 127.0.0.1.
+        /// </summary>
+        public static string Localhost {
+            get {
+                return ResourceManager.GetString("Localhost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Can&apos;t find the service .
         /// </summary>
         public static string NonService {

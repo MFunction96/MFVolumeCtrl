@@ -1,9 +1,9 @@
 ﻿using MFVolumeCtrl;
+using MFVolumeCtrl.Properties;
 using System;
-using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Net.Sockets;
-using System.Runtime.InteropServices;
 using System.ServiceProcess;
 using System.Threading;
 
@@ -25,11 +25,11 @@ namespace MFVolumeService
         /// <summary>
         /// 
         /// </summary>
-        protected IList<ServiceModel> Services { get; set; }
+        protected ServiceModel ServiceGroup { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        protected TcpListener Listener { get; set; }
+        protected Socket Listener { get; set; }
         /// <summary>
         /// 
         /// </summary>
@@ -40,8 +40,11 @@ namespace MFVolumeService
         public MfVolumeService()
         {
             InitializeComponent();
-            ConfigPath = MFVolumeCtrl.Properties.Resources.ConfigPath;
-            ListenThread = new Thread(Listen);
+            ConfigPath = Resources.ConfigPath;
+            ListenThread = new Thread(Listen)
+            {
+                IsBackground = true
+            };
         }
         /// <inheritdoc />
         /// <summary>
@@ -58,13 +61,13 @@ namespace MFVolumeService
                     if (args[i] == Properties.Resources.ArgPort) port = int.Parse(args[++i]);
                 }
                 if (!Directory.Exists(ConfigPath)) Directory.CreateDirectory(ConfigPath);
-                Listener = TcpListener.Create(port);
-                Listener.Start();
+                Listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                Listener.Bind(new IPEndPoint(IPAddress.Parse(Resources.Localhost), port));
                 ListenThread.Start();
             }
             catch (Exception e)
             {
-                ErrorCtrl.WriteError(e);
+                ErrorUtil.WriteError(e);
             }
         }
         /// <inheritdoc />
@@ -73,7 +76,6 @@ namespace MFVolumeService
         protected override void OnStop()
         {
             ListenThread.Interrupt();
-            Listener.Stop();
         }
         /// <summary>
         /// 
@@ -84,33 +86,16 @@ namespace MFVolumeService
             {
                 try
                 {
-                    var client = Listener.AcceptTcpClient();
-                    Receive(client.GetStream());
+                    var client = Listener.Accept();
+                    ServiceGroup = ServiceModel.Receive(client);
+                    ServiceGroup.SetStatus(Settings);
+                    ServiceGroup.Send(client);
                     client.Close();
                 }
                 catch (Exception e)
                 {
-                    ErrorCtrl.WriteError(e);
+                    ErrorUtil.WriteError(e);
                 }
-            }
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="stream"></param>
-        /// <returns></returns>
-        protected void Receive(NetworkStream stream)
-        {
-            var buffer = new byte[stream.Length];
-            stream.ReadAsync(buffer, 0, (int)stream.Length);
-            try
-            {
-                var ptr = Marshal.UnsafeAddrOfPinnedArrayElement(buffer, 0);
-                Services = Marshal.PtrToStructure<List<ServiceModel>>(ptr);
-            }
-            catch (Exception e)
-            {
-                ErrorCtrl.WriteError(e);
             }
         }
     }

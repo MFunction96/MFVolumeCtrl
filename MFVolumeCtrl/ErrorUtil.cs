@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MFVolumeCtrl.Properties;
+﻿using MFVolumeCtrl.Properties;
 using Newtonsoft.Json;
+using System;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace MFVolumeCtrl
 {
-    public static class ErrorCtrl
+    public static class ErrorUtil
     {
         public static Task WriteError(Exception e)
         {
