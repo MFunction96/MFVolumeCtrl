@@ -15,15 +15,19 @@ namespace MFVolumeCtrl
         public int Port { get; set; }
         public bool Activation { get; set; }
         public string KmsServer { get; set; }
-
+        /// <inheritdoc />
+        /// <summary>
+        /// </summary>
         public void Read()
         {
-
+            Read(string.Empty);
         }
-
+        /// <inheritdoc />
+        /// <summary>
+        /// </summary>
         public void Write()
         {
-
+            Write(string.Empty);
         }
         /// <inheritdoc />
         /// <summary>
@@ -33,7 +37,7 @@ namespace MFVolumeCtrl
         public virtual void Read(string path)
         {
             path = path == string.Empty ? $"{Resources.ConfigPath}\\{Resources.SettingFile}" : path;
-            var json = File.ReadAllText(path);
+            var json = File.ReadAllText(path, Encoding.UTF8);
             var settings = JsonConvert.DeserializeObject<SettingsModel>(json);
             Enabled = settings.Enabled;
             Interval = settings.Interval;

@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MFVolumePanel"
         mc:Ignorable="d"
         Title="MainWindow" Height="259.067" Width="311.6" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
     <Grid Margin="0,0,-0.4,-0.4">
@@ -20,7 +19,7 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <ToggleButton x:Name="TogBtn" Content="" Grid.Column="1" Margin="10,10,10,13.44" d:LayoutOverrides="Height" Checked="TogBtn_Checked"/>
-            <ComboBox x:Name="CbGroup" Margin="10,10,10,11.44" d:LayoutOverrides="Height"/>
+            <ComboBox Grid.Column="0" x:Name="CbGroup" Margin="10,10,10,11.44" d:LayoutOverrides="Height"/>
         </Grid>
 
     </Grid>

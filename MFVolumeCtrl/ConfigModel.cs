@@ -19,7 +19,7 @@ namespace MFVolumeCtrl
         {
             base.Read(path);
             path = path == string.Empty ? $"{Resources.ConfigPath}\\{Resources.ServiceFile}" : path;
-            var json = File.ReadAllText(path);
+            var json = File.ReadAllText(path, Encoding.UTF8);
             Services = JsonConvert.DeserializeObject<List<ServiceModel>>(json);
         }
 
