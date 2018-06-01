@@ -54,7 +54,7 @@ namespace MFVolumeService
         {
             try
             {
-                Settings.ReadAsync();
+                Settings.Read();
                 var port = Settings.Port;
                 for (var i = 0; i < args.Length; i++)
                 {

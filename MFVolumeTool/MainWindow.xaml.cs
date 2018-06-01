@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using MFVolumeCtrl;
 
 namespace MFVolumeTool
 {
@@ -8,6 +9,8 @@ namespace MFVolumeTool
     /// </summary>
     public partial class MainWindow : Window
     {
+        public ConfigModel Config { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -20,10 +23,16 @@ namespace MFVolumeTool
 
         private void BtnService_Click(object sender, RoutedEventArgs e)
         {
-
+            var wdw = new ServiceWindow();
+            wdw.ShowDialog();
         }
 
         private void BtnClose_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void MainWindow1_Loaded(object sender, RoutedEventArgs e)
         {
 
         }

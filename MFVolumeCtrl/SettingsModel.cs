@@ -1,13 +1,13 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
-using MFVolumeCtrl.Properties;
+﻿using MFVolumeCtrl.Properties;
 using Newtonsoft.Json;
+using System;
+using System.IO;
+using System.Text;
 
 namespace MFVolumeCtrl
 {
     [Serializable]
-    public class SettingsModel
+    public class SettingsModel : IConfig
     {
         public bool Enabled { get; set; }
         public int Interval { get; set; }
@@ -15,55 +15,43 @@ namespace MFVolumeCtrl
         public int Port { get; set; }
         public bool Activation { get; set; }
         public string KmsServer { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public Task ReadAsync()
+
+        public void Read()
         {
-            return ReadAsync(string.Empty);
+
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public Task WriteAsync()
+
+        public void Write()
         {
-            return WriteAsync(string.Empty);
+
         }
+        /// <inheritdoc />
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public Task ReadAsync(string path)
+        public virtual void Read(string path)
         {
-            return Task.Run(() =>
-            {
-                path = path == string.Empty ? $"{Resources.ConfigPath}\\{Resources.SettingFile}" : path;
-                var json = File.ReadAllText(path);
-                var settings = JsonConvert.DeserializeObject<SettingsModel>(json);
-                Enabled = settings.Enabled;
-                Interval = settings.Interval;
-                Check = settings.Check;
-                Port = settings.Port;
-                Activation = settings.Activation;
-                KmsServer = settings.KmsServer;
-            });
+            path = path == string.Empty ? $"{Resources.ConfigPath}\\{Resources.SettingFile}" : path;
+            var json = File.ReadAllText(path);
+            var settings = JsonConvert.DeserializeObject<SettingsModel>(json);
+            Enabled = settings.Enabled;
+            Interval = settings.Interval;
+            Check = settings.Check;
+            Port = settings.Port;
+            Activation = settings.Activation;
+            KmsServer = settings.KmsServer;
         }
+        /// <inheritdoc />
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public Task WriteAsync(string path)
+        public virtual void Write(string path)
         {
-            return Task.Run(() =>
-            {
-                path = path == string.Empty ? $"{Resources.ConfigPath}\\{Resources.SettingFile}" : path;
-                var json = JsonConvert.SerializeObject(this);
-                File.WriteAllText(path, json);
-            });
+            path = path == string.Empty ? $"{Resources.ConfigPath}\\{Resources.SettingFile}" : path;
+            var json = JsonConvert.SerializeObject(this);
+            File.WriteAllText(path, json, Encoding.UTF8);
         }
     }
 }

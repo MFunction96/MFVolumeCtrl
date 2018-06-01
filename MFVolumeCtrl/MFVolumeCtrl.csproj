@@ -45,7 +45,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BinaryUtil.cs" />
+    <Compile Include="ConfigModel.cs" />
     <Compile Include="ErrorUtil.cs" />
+    <Compile Include="IConfig.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

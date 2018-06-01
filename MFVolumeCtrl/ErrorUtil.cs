@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace MFVolumeCtrl
@@ -13,7 +14,7 @@ namespace MFVolumeCtrl
             return Task.Run(() =>
             {
                 var json = JsonConvert.SerializeObject(e);
-                File.AppendAllText($"{Resources.ConfigPath}\\{Resources.ErrorFile}", json);
+                File.AppendAllText($"{Resources.ConfigPath}\\{Resources.ErrorFile}", json, Encoding.UTF8);
             });
         }
     }

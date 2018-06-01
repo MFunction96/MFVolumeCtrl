@@ -1,4 +1,4 @@
-﻿<Window x:Name="ServiceWindow1" x:Class="MFVolumeTool.ServiceWindow"
+﻿<Window x:Class="MFVolumeTool.ServiceWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -29,7 +29,7 @@
             </Grid.ColumnDefinitions>
             <ListBox x:Name="LbService" Margin="10"/>
             <Button x:Name="BtnAddService" Content="添加服务" Grid.Column="1" Margin="22,38.8,18.8,0" VerticalAlignment="Top" Click="BtnAddService_Click"/>
-            <Button x:Name="BtnModifyService" Content="修改服务" Grid.Column="1" Margin="22,91.76,18.8,0" VerticalAlignment="Top" Click="BtnModifyService_Click"/>
+            <Button x:Name="BtnModifyService" Content="修改服务" Grid.Column="1" Margin="22,98,19,0" VerticalAlignment="Top" Click="BtnModifyService_Click"/>
             <Button x:Name="BtnDeleteService" Content="删除服务" Grid.Column="1" Margin="22,148.4,18.8,135.44" d:LayoutOverrides="Height" Click="BtnDeleteService_Click"/>
         </Grid>
     </Grid>
