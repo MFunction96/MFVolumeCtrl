@@ -46,14 +46,15 @@ namespace MFVolumeCtrl
             }
             return true;
         }
+
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="settings"></param>
+        /// <param name="source"></param>
+        /// <param name="countDown"></param>
         /// <returns></returns>
-        public bool SetStatus(SettingsModel settings)
+        public void SetStatus(Socket source, int countDown)
         {
-            var flag = false;
             var services = ServiceController.GetServices();
             foreach (var service in Services)
             {
@@ -63,36 +64,30 @@ namespace MFVolumeCtrl
                 {
                     if (Enabled) continue;
                     controller.Stop();
-                    flag = true;
                 }
                 else if (controller.Status != ServiceControllerStatus.Running)
                 {
                     if (!Enabled) continue;
                     controller.Start();
-                    flag = true;
                 }
             }
 
-            if (!flag) return false;
-            flag = false;
-            for (var i = 0; i < settings.Check; i++)
+            for (var i = 0; i < countDown; i++)
             {
+                Send(source);
                 if (CheckStatus() != Enabled)
                 {
                     Enabled = !Enabled;
-                    flag = true;
                     break;
                 }
-                Thread.Sleep(settings.Interval);
+                Thread.Sleep(1000);
             }
-            
-            return flag;
         }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="socket"></param>
-        public void Send(Socket socket)
+        public async void Send(Socket socket)
         {
             try
             {
@@ -101,7 +96,7 @@ namespace MFVolumeCtrl
             }
             catch (Exception e)
             {
-                ErrorUtil.WriteError(e);
+                await ErrorUtil.WriteError(e);
             }
         }
         /// <summary>

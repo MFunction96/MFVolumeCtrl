@@ -8,6 +8,10 @@
         /// <summary>
         /// 
         /// </summary>
+        void Create(string filepath);
+        /// <summary>
+        /// 
+        /// </summary>
         void Read();
 
         /// <summary>

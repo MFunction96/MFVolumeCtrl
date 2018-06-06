@@ -4,7 +4,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="MFVolumeTool" Height="291.35" Width="360" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Loaded="MainWindow1_Loaded">
+        Title="MFVolumeTool" Height="291.35" Width="360" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Loaded="Window_Loaded">
     <Grid Margin="0,0,-0.4,0" Height="261" VerticalAlignment="Top">
         <Grid Height="34" Margin="0,21,0,0" VerticalAlignment="Top">
             <Grid.ColumnDefinitions>

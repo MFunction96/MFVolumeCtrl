@@ -1,5 +1,6 @@
-﻿using System.Windows;
-using MFVolumeCtrl;
+﻿using MFVolumeCtrl;
+using System;
+using System.Windows;
 
 namespace MFVolumeTool
 {
@@ -14,27 +15,34 @@ namespace MFVolumeTool
         public MainWindow()
         {
             InitializeComponent();
+            Config = new ConfigModel();
         }
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
-            
+            Config.Settings.Write();
+            Config.Write();
+            MessageBox.Show(Properties.Resources.SuccessInfo);
         }
 
         private void BtnService_Click(object sender, RoutedEventArgs e)
         {
-            var wdw = new ServiceWindow();
+            var wdw = new ServiceWindow(Config.Services)
+            {
+                AcConfig = (services) => Config.Services = services
+            };
             wdw.ShowDialog();
         }
 
         private void BtnClose_Click(object sender, RoutedEventArgs e)
         {
-
+            Environment.Exit(0);
         }
 
-        private void MainWindow1_Loaded(object sender, RoutedEventArgs e)
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-
+            Config.Read();
+            
         }
     }
 }

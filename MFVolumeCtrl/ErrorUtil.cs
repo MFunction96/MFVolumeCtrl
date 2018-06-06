@@ -13,7 +13,7 @@ namespace MFVolumeCtrl
         {
             return Task.Run(() =>
             {
-                var json = JsonConvert.SerializeObject(e);
+                var json = JsonConvert.SerializeObject(e, Formatting.Indented);
                 File.AppendAllText($"{Resources.ConfigPath}\\{Resources.ErrorFile}", json, Encoding.UTF8);
             });
         }

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MFVolumeTool"
         mc:Ignorable="d"
-        Title="ServiceWindow" Height="403.6" Width="606" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+        Title="ServiceWindow" Height="455.2" Width="606" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
     <Grid>
         <Grid Height="45.6" Margin="10,10,10,0" VerticalAlignment="Top">
             <Grid.ColumnDefinitions>
@@ -14,7 +14,7 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="BtnAddGroup" Content="添加分组" Grid.Column="1" Margin="10,15.64,11.667,10" d:LayoutOverrides="Height"/>
+            <Button x:Name="BtnAddGroup" Content="添加分组" Grid.Column="1" Margin="10,15.64,11.667,10" d:LayoutOverrides="Height" Click="BtnAddGroup_Click"/>
             <Button x:Name="BtnModifyGroup" Content="修改分组" Grid.Column="2" Margin="10,15.64,11.666,10" d:LayoutOverrides="Height" Click="BtnModifyGroup_Click"/>
             <Button x:Name="BtnDeleteGroup" Content="删除分组" Grid.Column="3" Margin="10,15.64,11.667,10" d:LayoutOverrides="Height" Click="BtnDeleteGroup_Click"/>
             <ComboBox x:Name="CbGroup" Margin="10,13.64,10,10" d:LayoutOverrides="Height" SelectionChanged="CbGroup_SelectionChanged"/>
@@ -27,10 +27,14 @@
                 <ColumnDefinition Width="4*"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <ListBox x:Name="LbService" Margin="10"/>
+            <ListBox x:Name="LbService" Margin="10,10,10,0" Height="283.8" VerticalAlignment="Top"/>
             <Button x:Name="BtnAddService" Content="添加服务" Grid.Column="1" Margin="22,38.8,18.8,0" VerticalAlignment="Top" Click="BtnAddService_Click"/>
             <Button x:Name="BtnModifyService" Content="修改服务" Grid.Column="1" Margin="22,98,19,0" VerticalAlignment="Top" Click="BtnModifyService_Click"/>
-            <Button x:Name="BtnDeleteService" Content="删除服务" Grid.Column="1" Margin="22,148.4,18.8,135.44" d:LayoutOverrides="Height" Click="BtnDeleteService_Click"/>
+            <Button x:Name="BtnDeleteService" Content="删除服务" Grid.Column="1" Margin="22,148.4,18.8,0" Click="BtnDeleteService_Click" VerticalAlignment="Top"/>
+            <Grid Height="46.6" Margin="10,0,10,10" VerticalAlignment="Bottom" Grid.ColumnSpan="2" Grid.Column="0">
+                <Button x:Name="BtnCommit" Content="确认" HorizontalAlignment="Left" Margin="148.333,16.64,0,10" Width="75" d:LayoutOverrides="Height" Click="BtnCommit_Click"/>
+                <Button x:Name="BtnCancel" Content="取消" HorizontalAlignment="Right" Margin="0,16.64,123.867,10" Width="75" d:LayoutOverrides="Height" Click="BtnCancel_Click"/>
+            </Grid>
         </Grid>
     </Grid>
 </Window>

@@ -6,12 +6,14 @@ using System.Text;
 
 namespace MFVolumeCtrl
 {
+    /// <inheritdoc />
+    /// <summary>
+    /// </summary>
     [Serializable]
     public class SettingsModel : IConfig
     {
         public bool Enabled { get; set; }
-        public int Interval { get; set; }
-        public int Check { get; set; }
+        public int CountDown { get; set; }
         public int Port { get; set; }
         public bool Activation { get; set; }
         public string KmsServer { get; set; }
@@ -29,19 +31,40 @@ namespace MFVolumeCtrl
         {
             Write(string.Empty);
         }
+
+        /// <inheritdoc />
+        /// <summary>
+        /// </summary>
+        /// <param name="filepath"></param>
+        public void Create(string filepath)
+        {
+            var dir = filepath.Substring(0, filepath.LastIndexOf('\\'));
+            if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
+            File.Create(filepath);
+        }
+
         /// <inheritdoc />
         /// <summary>
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public virtual void Read(string path)
+        public void Read(string path)
         {
-            path = path == string.Empty ? $"{Resources.ConfigPath}\\{Resources.SettingFile}" : path;
-            var json = File.ReadAllText(path, Encoding.UTF8);
-            var settings = JsonConvert.DeserializeObject<SettingsModel>(json);
+            if (path == string.Empty) path = Resources.ConfigPath;
+            var filepath = $"{path}\\{Resources.SettingFile}";
+            var settings = new SettingsModel();
+            if (File.Exists(filepath))
+            {
+                var json = File.ReadAllText(filepath, Encoding.UTF8);
+                settings = JsonConvert.DeserializeObject<SettingsModel>(json);
+            }
+            else
+            {
+                Create(filepath);
+            }
+            if (settings is null) settings = new SettingsModel();
             Enabled = settings.Enabled;
-            Interval = settings.Interval;
-            Check = settings.Check;
+            CountDown = settings.CountDown;
             Port = settings.Port;
             Activation = settings.Activation;
             KmsServer = settings.KmsServer;
@@ -51,10 +74,10 @@ namespace MFVolumeCtrl
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public virtual void Write(string path)
+        public void Write(string path)
         {
             path = path == string.Empty ? $"{Resources.ConfigPath}\\{Resources.SettingFile}" : path;
-            var json = JsonConvert.SerializeObject(this);
+            var json = JsonConvert.SerializeObject(this, Formatting.Indented);
             File.WriteAllText(path, json, Encoding.UTF8);
         }
     }

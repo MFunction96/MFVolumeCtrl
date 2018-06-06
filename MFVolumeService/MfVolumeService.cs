@@ -1,7 +1,6 @@
 ﻿using MFVolumeCtrl;
 using MFVolumeCtrl.Properties;
 using System;
-using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.ServiceProcess;
@@ -14,6 +13,7 @@ namespace MFVolumeService
     /// </summary>
     public partial class MfVolumeService : ServiceBase
     {
+        #region Proporties
         /// <summary>
         /// 
         /// </summary>
@@ -34,6 +34,9 @@ namespace MFVolumeService
         /// 
         /// </summary>
         protected Thread ListenThread { get; set; }
+        #endregion
+
+        #region Initial
         /// <inheritdoc />
         /// <summary>
         /// </summary>
@@ -46,6 +49,23 @@ namespace MFVolumeService
                 IsBackground = true
             };
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="args"></param>
+        protected void HandleArgs(string[] args)
+        {
+            var port = Settings.Port;
+            for (var i = 0; i < args.Length; i++)
+            {
+                if (args[i] == Properties.Resources.ArgPort) port = int.Parse(args[++i]);
+            }
+            Listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            Listener.Bind(new IPEndPoint(IPAddress.Parse(Resources.Localhost), port));
+        }
+        #endregion
+
+        #region BasicEvent
         /// <inheritdoc />
         /// <summary>
         /// </summary>
@@ -55,14 +75,7 @@ namespace MFVolumeService
             try
             {
                 Settings.Read();
-                var port = Settings.Port;
-                for (var i = 0; i < args.Length; i++)
-                {
-                    if (args[i] == Properties.Resources.ArgPort) port = int.Parse(args[++i]);
-                }
-                if (!Directory.Exists(ConfigPath)) Directory.CreateDirectory(ConfigPath);
-                Listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                Listener.Bind(new IPEndPoint(IPAddress.Parse(Resources.Localhost), port));
+                HandleArgs(args);
                 ListenThread.Start();
             }
             catch (Exception e)
@@ -77,6 +90,7 @@ namespace MFVolumeService
         {
             ListenThread.Interrupt();
         }
+        #endregion
         /// <summary>
         /// 
         /// </summary>
@@ -88,8 +102,7 @@ namespace MFVolumeService
                 {
                     var client = Listener.Accept();
                     ServiceGroup = ServiceModel.Receive(client);
-                    ServiceGroup.SetStatus(Settings);
-                    ServiceGroup.Send(client);
+                    ServiceGroup.SetStatus(client, Settings.CountDown);
                     client.Close();
                 }
                 catch (Exception e)
