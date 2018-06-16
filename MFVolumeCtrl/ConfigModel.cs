@@ -1,6 +1,6 @@
-﻿using System;
-using MFVolumeCtrl.Properties;
+﻿using MFVolumeCtrl.Properties;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -10,21 +10,39 @@ namespace MFVolumeCtrl
     /// <inheritdoc />
     /// <summary>
     /// </summary>
+    [Serializable]
     public class ConfigModel : IConfig
     {
         /// <summary>
         /// 
         /// </summary>
+        public bool Enabled { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public int CountDown { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public int Port { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool Activation { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string KmsServer { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public IList<ServiceModel> Services { get; set; }
-
-        public SettingsModel Settings { get; protected set; }
         /// <summary>
         /// 
         /// </summary>
         public ConfigModel()
         {
             Services = new List<ServiceModel>();
-            Settings = new SettingsModel();
         }
         /// <inheritdoc />
         /// <summary>
@@ -40,7 +58,16 @@ namespace MFVolumeCtrl
         {
             Write(string.Empty);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        public void Initialize()
+        {
+            foreach (var service in Services)
+            {
+                service.SetStatus(service.Enabled);
+            }
+        }
         /// <inheritdoc />
         /// <summary>
         /// </summary>
@@ -59,19 +86,25 @@ namespace MFVolumeCtrl
         {
             try
             {
-                Settings.Read();
                 if (path == string.Empty) path = Resources.ConfigPath;
-                var filepath = $"{path}\\{Resources.ServiceFile}";
+                var filepath = $"{path}\\{Resources.ConfigPath}";
+                var config = new ConfigModel();
                 if (File.Exists(filepath))
                 {
                     var json = File.ReadAllText(filepath, Encoding.UTF8);
-                    Services = JsonConvert.DeserializeObject<List<ServiceModel>>(json);
+                    config = JsonConvert.DeserializeObject<ConfigModel>(json);
                 }
                 else
                 {
                     Create(filepath);
                 }
-                if (Services is null) Services = new List<ServiceModel>();
+                if (config is null) config = new ConfigModel();
+                Enabled = config.Enabled;
+                Activation = config.Activation;
+                CountDown = config.CountDown;
+                KmsServer = config.KmsServer;
+                Port = config.Port;
+                Services = config.Services;
             }
             catch (Exception e)
             {
@@ -87,7 +120,7 @@ namespace MFVolumeCtrl
         public void Write(string path)
         {
             if (path == string.Empty) path = Resources.ConfigPath;
-            var filepath = $"{path}\\{Resources.ServiceFile}";
+            var filepath = $"{path}\\{Resources.ConfigPath}";
             var json = JsonConvert.SerializeObject(Services, Formatting.Indented);
             File.WriteAllText(filepath, json, Encoding.UTF8);
         }

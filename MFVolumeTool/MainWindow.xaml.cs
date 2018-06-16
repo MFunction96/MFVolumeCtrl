@@ -20,7 +20,6 @@ namespace MFVolumeTool
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
-            Config.Settings.Write();
             Config.Write();
             MessageBox.Show(Properties.Resources.SuccessInfo);
         }

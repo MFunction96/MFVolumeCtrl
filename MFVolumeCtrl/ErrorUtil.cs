@@ -14,6 +14,7 @@ namespace MFVolumeCtrl
             return Task.Run(() =>
             {
                 var json = JsonConvert.SerializeObject(e, Formatting.Indented);
+                if (File.Exists($"{Resources.ConfigPath}\\{Resources.ErrorFile}")) json = $",\n{json}";
                 File.AppendAllText($"{Resources.ConfigPath}\\{Resources.ErrorFile}", json, Encoding.UTF8);
             });
         }

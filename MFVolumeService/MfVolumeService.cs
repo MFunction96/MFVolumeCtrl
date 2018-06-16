@@ -21,11 +21,7 @@ namespace MFVolumeService
         /// <summary>
         /// 
         /// </summary>
-        protected SettingsModel Settings { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        protected ServiceModel ServiceGroup { get; set; }
+        protected ConfigModel Config { get; set; }
         /// <summary>
         /// 
         /// </summary>
@@ -55,7 +51,7 @@ namespace MFVolumeService
         /// <param name="args"></param>
         protected void HandleArgs(string[] args)
         {
-            var port = Settings.Port;
+            var port = Config.Port;
             for (var i = 0; i < args.Length; i++)
             {
                 if (args[i] == Properties.Resources.ArgPort) port = int.Parse(args[++i]);
@@ -74,8 +70,9 @@ namespace MFVolumeService
         {
             try
             {
-                Settings.Read();
+                Config.Read();
                 HandleArgs(args);
+                Config.Initialize();
                 ListenThread.Start();
             }
             catch (Exception e)
@@ -96,13 +93,13 @@ namespace MFVolumeService
         /// </summary>
         public void Listen()
         {
-            while (Settings.Enabled)
+            while (Config.Enabled)
             {
                 try
                 {
                     var client = Listener.Accept();
-                    ServiceGroup = ServiceModel.Receive(client);
-                    ServiceGroup.SetStatus(client, Settings.CountDown);
+                    var service = ServiceModel.Receive(client);
+                    service.SetStatus(client, Config.CountDown, service.Enabled);
                     client.Close();
                 }
                 catch (Exception e)

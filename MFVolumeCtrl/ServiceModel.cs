@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.ServiceProcess;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace MFVolumeCtrl
 {
@@ -46,32 +47,61 @@ namespace MFVolumeCtrl
             }
             return true;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="status"></param>
+        public Task SetStatus(bool status)
+        {
+            return Task.Run(() =>
+            {
+                var services = ServiceController.GetServices();
+                foreach (var service in Services)
+                {
+                    var controller = services.First(tmp => tmp.ServiceName == service);
+                    if (controller is null) throw new NullReferenceException($"{Resources.NonService} : {service}");
+                    if (status) controller.Start();
+                    else controller.Stop();
+                }
+            });
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="countDown"></param>
+        /// <param name="status"></param>
+        public async void SetStatus(Socket source, int countDown, bool status)
+        {
+            await SetStatus(status);
+            for (var i = 0; i < countDown; i++)
+            {
+                Send(source);
+                if (CheckStatus() != Enabled)
+                {
+                    Enabled = !Enabled;
+                    break;
+                }
+                Thread.Sleep(1000);
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public async void SwitchStatus()
+        {
+            await SetStatus(!Enabled);
+            Enabled = !Enabled;
+        }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="source"></param>
         /// <param name="countDown"></param>
         /// <returns></returns>
-        public void SetStatus(Socket source, int countDown)
+        public void SwitchStatus(Socket source, int countDown)
         {
-            var services = ServiceController.GetServices();
-            foreach (var service in Services)
-            {
-                var controller = services.First(tmp => tmp.ServiceName == service);
-                if (controller is null) throw new NullReferenceException($"{Resources.NonService} : {service}");
-                if (controller.Status != ServiceControllerStatus.Stopped)
-                {
-                    if (Enabled) continue;
-                    controller.Stop();
-                }
-                else if (controller.Status != ServiceControllerStatus.Running)
-                {
-                    if (!Enabled) continue;
-                    controller.Start();
-                }
-            }
-
+            SwitchStatus();
             for (var i = 0; i < countDown; i++)
             {
                 Send(source);
@@ -119,7 +149,9 @@ namespace MFVolumeCtrl
                 return null;
             }
         }
-
+        /// <inheritdoc />
+        /// <summary>
+        /// </summary>
         public void Dispose()
         {
             Services.Clear();
