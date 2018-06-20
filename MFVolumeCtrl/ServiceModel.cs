@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace MFVolumeCtrl
 {
+    /// <inheritdoc />
+    /// <summary>
+    /// </summary>
     [Serializable]
     public class ServiceModel : IDisposable
     {
@@ -70,10 +73,8 @@ namespace MFVolumeCtrl
         /// </summary>
         /// <param name="source"></param>
         /// <param name="countDown"></param>
-        /// <param name="status"></param>
-        public async void SetStatus(Socket source, int countDown, bool status)
+        protected void SendCallback(Socket source, int countDown)
         {
-            await SetStatus(status);
             for (var i = 0; i < countDown; i++)
             {
                 Send(source);
@@ -82,8 +83,20 @@ namespace MFVolumeCtrl
                     Enabled = !Enabled;
                     break;
                 }
+
                 Thread.Sleep(1000);
             }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="countDown"></param>
+        /// <param name="status"></param>
+        public async void SetStatus(Socket source, int countDown, bool status)
+        {
+            await SetStatus(status);
+            SendCallback(source, countDown);
         }
         /// <summary>
         /// 
@@ -102,16 +115,7 @@ namespace MFVolumeCtrl
         public void SwitchStatus(Socket source, int countDown)
         {
             SwitchStatus();
-            for (var i = 0; i < countDown; i++)
-            {
-                Send(source);
-                if (CheckStatus() != Enabled)
-                {
-                    Enabled = !Enabled;
-                    break;
-                }
-                Thread.Sleep(1000);
-            }
+            SendCallback(source, countDown);
         }
         /// <summary>
         /// 

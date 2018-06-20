@@ -40,8 +40,8 @@
             // serviceInstaller1
             // 
             this.serviceInstaller1.DelayedAutoStart = true;
-            this.serviceInstaller1.DisplayName = "MFVolume";
-            this.serviceInstaller1.ServiceName = "MFVolume";
+            this.serviceInstaller1.DisplayName = "MFVolumeService";
+            this.serviceInstaller1.ServiceName = "MFVolumeService";
             this.serviceInstaller1.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
             // 
             // ProjectInstaller

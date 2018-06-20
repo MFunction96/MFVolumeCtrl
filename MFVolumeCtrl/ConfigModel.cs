@@ -87,7 +87,7 @@ namespace MFVolumeCtrl
             try
             {
                 if (path == string.Empty) path = Resources.ConfigPath;
-                var filepath = $"{path}\\{Resources.ConfigPath}";
+                var filepath = $"{path}\\{Resources.ConfigFile}";
                 var config = new ConfigModel();
                 if (File.Exists(filepath))
                 {
@@ -120,7 +120,7 @@ namespace MFVolumeCtrl
         public void Write(string path)
         {
             if (path == string.Empty) path = Resources.ConfigPath;
-            var filepath = $"{path}\\{Resources.ConfigPath}";
+            var filepath = $"{path}\\{Resources.ConfigFile}";
             var json = JsonConvert.SerializeObject(Services, Formatting.Indented);
             File.WriteAllText(filepath, json, Encoding.UTF8);
         }

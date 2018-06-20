@@ -117,22 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ConfigFile" xml:space="preserve">
-    <value>config.json</value>
+  <data name="InstallUtil" xml:space="preserve">
+    <value>C:\Windows\Microsoft.NET\Framework64\v4.0.30319\InstallUtil.exe</value>
   </data>
-  <data name="ConfigPath" xml:space="preserve">
-    <value>C:\ProgramData\MFVolumeCtrl</value>
+  <data name="MFVolumeService" xml:space="preserve">
+    <value>MFVolumeService</value>
   </data>
-  <data name="ErrorFile" xml:space="preserve">
-    <value>error.log</value>
-  </data>
-  <data name="ExceptStatus" xml:space="preserve">
-    <value> status is invalid.</value>
-  </data>
-  <data name="Localhost" xml:space="preserve">
-    <value>127.0.0.1</value>
-  </data>
-  <data name="NonService" xml:space="preserve">
-    <value>Can't find the service </value>
+  <data name="ProgramPath" xml:space="preserve">
+    <value>C:\Program Files\MFVolumeCtrl</value>
   </data>
 </root>

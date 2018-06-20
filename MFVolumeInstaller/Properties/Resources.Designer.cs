@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MFVolumeCtrl.Properties {
+namespace MFVolumeInstaller.Properties {
     using System;
     
     
@@ -22,7 +22,7 @@ namespace MFVolumeCtrl.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Resources {
+    internal class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,10 +36,10 @@ namespace MFVolumeCtrl.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MFVolumeCtrl.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MFVolumeInstaller.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace MFVolumeCtrl.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        internal static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,56 +61,29 @@ namespace MFVolumeCtrl.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to config.json.
+        ///   Looks up a localized string similar to C:\Windows\Microsoft.NET\Framework64\v4.0.30319\InstallUtil.exe.
         /// </summary>
-        public static string ConfigFile {
+        internal static string InstallUtil {
             get {
-                return ResourceManager.GetString("ConfigFile", resourceCulture);
+                return ResourceManager.GetString("InstallUtil", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to C:\ProgramData\MFVolumeCtrl.
+        ///   Looks up a localized string similar to MFVolumeService.
         /// </summary>
-        public static string ConfigPath {
+        internal static string MFVolumeService {
             get {
-                return ResourceManager.GetString("ConfigPath", resourceCulture);
+                return ResourceManager.GetString("MFVolumeService", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to error.log.
+        ///   Looks up a localized string similar to C:\Program Files\MFVolumeCtrl.
         /// </summary>
-        public static string ErrorFile {
+        internal static string ProgramPath {
             get {
-                return ResourceManager.GetString("ErrorFile", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to  status is invalid..
-        /// </summary>
-        public static string ExceptStatus {
-            get {
-                return ResourceManager.GetString("ExceptStatus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 127.0.0.1.
-        /// </summary>
-        public static string Localhost {
-            get {
-                return ResourceManager.GetString("Localhost", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Can&apos;t find the service .
-        /// </summary>
-        public static string NonService {
-            get {
-                return ResourceManager.GetString("NonService", resourceCulture);
+                return ResourceManager.GetString("ProgramPath", resourceCulture);
             }
         }
     }
