@@ -42,7 +42,6 @@
   <ItemGroup>
     <Compile Include="Enums\WAIT_STATUS.cs" />
     <Compile Include="Methods\MemoryCtrl.cs" />
-    <Compile Include="Methods\ProcessCtrl.cs" />
     <Compile Include="Models\ProcessEx.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

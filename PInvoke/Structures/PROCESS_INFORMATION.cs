@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using PInvoke.Methods;
 
 // ReSharper disable InconsistentNaming
 
@@ -36,18 +37,16 @@ namespace PInvoke.Structures
         {
             ProcessId = processInformation.ProcessId;
             ThreadId = processInformation.ThreadId;
-            hProcess = Marshal.AllocHGlobal(processInformation.hProcess);
-            NativeMethods.CopyMemory(hProcess,processInformation.hProcess,Marshal.SizeOf(hProcess));
-            hThread = Marshal.AllocHGlobal(processInformation.hThread);
-            NativeMethods.CopyMemory(hThread, processInformation.hThread, Marshal.SizeOf(hThread));
+            hProcess = MemoryCtrl.CopyMemoryEx(processInformation.hProcess);
+            hThread = MemoryCtrl.CopyMemoryEx(processInformation.hThread);
         }
         /// <inheritdoc />
         /// <summary>
         /// </summary>
         public void Dispose()
         {
-            if (hProcess != IntPtr.Zero) Marshal.FreeHGlobal(hProcess);
-            if (hThread != IntPtr.Zero) Marshal.FreeHGlobal(hThread);
+            MemoryCtrl.FreeMemoryEx(hProcess);
+            MemoryCtrl.FreeMemoryEx(hThread);
         }
     }
 }

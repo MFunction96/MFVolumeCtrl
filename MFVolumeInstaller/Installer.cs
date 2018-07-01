@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.ServiceProcess;
-using PInvoke.Methods;
 
 namespace MFVolumeInstaller
 {
@@ -41,14 +40,26 @@ namespace MFVolumeInstaller
             {
                 //ignore
             }
-            var process =
-                Process.Start($"{Properties.Resources.ProgramPath}\\{Properties.Resources.MFVolumeService}.exe",
-                    "-uninstall");
-            process?.WaitForExit();
-            //MFVolumeService.Program.Install(false, null);
-            /*var process = Process.Start(Properties.Resources.InstallUtil, 
-                $"-u {Properties.Resources.ProgramPath}\\{Properties.Resources.MFVolumeService}.exe");
-            process?.WaitForExit();*/
+            var process = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = Properties.Resources.InstallUtil,
+                    Arguments = $"-u \"{Properties.Resources.ProgramPath}\\{Properties.Resources.MFVolumeService}.exe\"",
+                    CreateNoWindow = true,
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false
+                }
+            };
+            process.Start();
+            string line = null;
+            while (!process.StandardOutput.EndOfStream)
+            {
+                line += process.StandardOutput.ReadLine() + Environment.NewLine;
+            }
+            Console.WriteLine(line);
+            process.WaitForExit();
+            
             var tmp = new DirectoryInfo(Properties.Resources.ProgramPath).GetFiles();
             foreach (var file in tmp)
             {
@@ -82,33 +93,26 @@ namespace MFVolumeInstaller
 
             //MFVolumeService.Program.Install(true, null);
 
-            var process = ProcessCtrl.CreateProcessEx($"{Properties.Resources.ProgramPath}\\{Properties.Resources.MFVolumeService}.exe",
-                    "-install");
-            
-
-            /*var process = new Process
+            var process = new Process
             {
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = Properties.Resources.InstallUtil,
-                    Arguments = $"{Properties.Resources.ProgramPath}\\{Properties.Resources.MFVolumeService}.exe",
-                    UseShellExecute = true,
-                    Verb = "runas"
+                    Arguments = $"\"{Properties.Resources.ProgramPath}\\{Properties.Resources.MFVolumeService}.exe\"",
+                    CreateNoWindow = true,
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false
                 }
+                
             };
-            try
+            process.Start();
+            string line = null;
+            while (!process.StandardOutput.EndOfStream)
             {
-                process.Start();
-                process.WaitForExit();
+                line += process.StandardOutput.ReadLine() + Environment.NewLine;
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-
-            var ti = new TransactedInstaller();
-            ti.Installers.Add(new ProjectInstaller());*/
+            Console.WriteLine(line);
+            process.WaitForExit();
             ServiceController.GetServices().First(sv => sv.ServiceName == Properties.Resources.MFVolumeService).Start();
         }
         /// <summary>

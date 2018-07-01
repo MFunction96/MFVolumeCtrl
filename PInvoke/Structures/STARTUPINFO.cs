@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using PInvoke.Methods;
 
 // ReSharper disable InconsistentNaming
 
@@ -103,24 +104,20 @@ namespace PInvoke.Structures
             dwY = startupInfo.dwY;
             dwYCountChars = startupInfo.dwYCountChars;
             dwYSize = startupInfo.dwYSize;
-            lpReserved2 = Marshal.AllocHGlobal(startupInfo.lpReserved2);
-            NativeMethods.CopyMemory(lpReserved2, startupInfo.lpReserved2, Marshal.SizeOf(startupInfo.lpReserved2));
-            hStdError = Marshal.AllocHGlobal(startupInfo.hStdError);
-            NativeMethods.CopyMemory(hStdError, startupInfo.hStdError, Marshal.SizeOf(startupInfo.hStdError));
-            hStdInput = Marshal.AllocHGlobal(startupInfo.hStdInput);
-            NativeMethods.CopyMemory(hStdInput, startupInfo.hStdInput, Marshal.SizeOf(startupInfo.hStdInput));
-            hStdOutput = Marshal.AllocHGlobal(startupInfo.hStdOutput);
-            NativeMethods.CopyMemory(hStdOutput, startupInfo.hStdOutput, Marshal.SizeOf(startupInfo.hStdOutput));
+            lpReserved2 = MemoryCtrl.CopyMemoryEx(startupInfo.lpReserved2);
+            hStdError = MemoryCtrl.CopyMemoryEx(startupInfo.hStdError);
+            hStdInput = MemoryCtrl.CopyMemoryEx(startupInfo.hStdInput);
+            hStdOutput = MemoryCtrl.CopyMemoryEx(startupInfo.hStdOutput);
         }
         /// <inheritdoc />
         /// <summary>
         /// </summary>
         public void Dispose()
         {
-            if (lpReserved2 != IntPtr.Zero) Marshal.FreeHGlobal(lpReserved2);
-            if (hStdError != IntPtr.Zero) Marshal.FreeHGlobal(hStdError);
-            if (hStdInput != IntPtr.Zero) Marshal.FreeHGlobal(hStdInput);
-            if (hStdOutput != IntPtr.Zero) Marshal.FreeHGlobal(hStdOutput);
+            MemoryCtrl.FreeMemoryEx(lpReserved2);
+            MemoryCtrl.FreeMemoryEx(hStdError);
+            MemoryCtrl.FreeMemoryEx(hStdInput);
+            MemoryCtrl.FreeMemoryEx(hStdOutput);
         }
     }
 }
