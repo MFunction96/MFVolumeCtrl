@@ -80,12 +80,12 @@ namespace MFVolumeInstaller
             if (!des.Exists)
             {
                 des.Create();
-                Console.Out.WriteLineAsync($"Creating folder {des.Name}");
+                Console.WriteLine($@"Creating folder {des.Name}");
             }
             foreach (var file in dir.GetFiles())
             {
                 file.CopyTo($"{Properties.Resources.ProgramPath}\\{file.Name}");
-                Console.Out.WriteLineAsync($"Copy {file.Name} to {des.Name}");
+                Console.WriteLine($@"Copy {file.Name} to {des.Name}");
             }
 
             dir = new DirectoryInfo(MFVolumeCtrl.Properties.Resources.ConfigPath);
