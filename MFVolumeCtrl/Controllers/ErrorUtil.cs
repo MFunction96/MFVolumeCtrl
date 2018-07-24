@@ -1,11 +1,11 @@
-﻿using MFVolumeCtrl.Properties;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using MFVolumeCtrl.Properties;
+using Newtonsoft.Json;
 
-namespace MFVolumeCtrl
+namespace MFVolumeCtrl.Controllers
 {
     public static class ErrorUtil
     {

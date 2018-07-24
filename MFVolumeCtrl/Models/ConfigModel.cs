@@ -1,11 +1,13 @@
-﻿using MFVolumeCtrl.Properties;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using MFVolumeCtrl.Interfaces;
+using MFVolumeCtrl.Models.Service;
+using MFVolumeCtrl.Properties;
+using Newtonsoft.Json;
 
-namespace MFVolumeCtrl
+namespace MFVolumeCtrl.Models
 {
     /// <inheritdoc />
     /// <summary>
@@ -29,6 +31,10 @@ namespace MFVolumeCtrl
         /// 
         /// </summary>
         public bool Activation { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool RunScript { get; set; }
         /// <summary>
         /// 
         /// </summary>
@@ -104,6 +110,7 @@ namespace MFVolumeCtrl
                 CountDown = config.CountDown;
                 KmsServer = config.KmsServer;
                 Port = config.Port;
+                RunScript = config.RunScript;
                 Services = config.Services;
             }
             catch (Exception e)

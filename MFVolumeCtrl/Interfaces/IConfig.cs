@@ -1,4 +1,4 @@
-﻿namespace MFVolumeCtrl
+﻿namespace MFVolumeCtrl.Interfaces
 {
     /// <summary>
     /// 

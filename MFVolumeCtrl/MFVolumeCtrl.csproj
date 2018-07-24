@@ -36,6 +36,9 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,16 +47,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BinaryUtil.cs" />
-    <Compile Include="ConfigModel.cs" />
-    <Compile Include="ErrorUtil.cs" />
-    <Compile Include="IConfig.cs" />
+    <Compile Include="Controllers\BinaryUtil.cs" />
+    <Compile Include="Models\Script\CommandModel.cs" />
+    <Compile Include="Models\ConfigModel.cs" />
+    <Compile Include="Controllers\ErrorUtil.cs" />
+    <Compile Include="Interfaces\IConfig.cs" />
+    <Compile Include="Models\Script\ScheduleModel.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="ServiceModel.cs" />
+    <Compile Include="Models\Script\ScriptModel.cs" />
+    <Compile Include="Models\Service\ServiceModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

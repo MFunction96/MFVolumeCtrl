@@ -1,4 +1,6 @@
-﻿using MFVolumeCtrl;
+﻿using MFVolumeCtrl.Controllers;
+using MFVolumeCtrl.Models;
+using MFVolumeCtrl.Models.Service;
 using MFVolumeCtrl.Properties;
 using System;
 using System.Net;

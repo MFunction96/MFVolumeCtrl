@@ -135,4 +135,10 @@
   <data name="NonService" xml:space="preserve">
     <value>Can't find the service </value>
   </data>
+  <data name="ScriptFile" xml:space="preserve">
+    <value>script.json</value>
+  </data>
+  <data name="ScriptPath" xml:space="preserve">
+    <value>D:\.MFVolumeCtrl</value>
+  </data>
 </root>

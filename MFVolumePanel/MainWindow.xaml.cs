@@ -1,5 +1,6 @@
 ﻿using MFVolumeCtrl;
 using System.Windows;
+using MFVolumeCtrl.Models;
 
 namespace MFVolumePanel
 {

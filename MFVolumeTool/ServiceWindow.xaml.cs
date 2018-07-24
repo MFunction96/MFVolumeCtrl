@@ -1,4 +1,4 @@
-﻿using MFVolumeCtrl;
+﻿using MFVolumeCtrl.Models.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -69,7 +69,7 @@ namespace MFVolumeTool
         {
             var dialog = new InputWindow(string.Empty)
             {
-                AcAddItem = (str) =>
+                AcAddItem = str =>
                 {
                     CbGroup.Items.Add(str);
                     CbEnabled.IsChecked = true;
@@ -94,7 +94,7 @@ namespace MFVolumeTool
         {
             var dialog = new InputWindow(CbGroup.SelectionBoxItem.ToString())
             {
-                AcAddItem = (str) =>
+                AcAddItem = str =>
                 {
                     var selected = Services.First(tmp => tmp.Nickname == CbGroup.SelectedValue.ToString());
                     var services = selected.Services;
@@ -141,7 +141,7 @@ namespace MFVolumeTool
         {
             var dialog = new InputWindow(string.Empty)
             {
-                AcAddItem = (str) =>
+                AcAddItem = str =>
                 {
                     LbService.Items.Add(str);
                     BtnModifyService.IsEnabled = true;
@@ -159,7 +159,7 @@ namespace MFVolumeTool
         {
             var dialog = new InputWindow(LbService.Items[LbService.SelectedIndex].ToString())
             {
-                AcAddItem = (str) => LbService.Items[LbService.SelectedIndex] = str
+                AcAddItem = str => LbService.Items[LbService.SelectedIndex] = str
             };
             dialog.ShowDialog();
         }

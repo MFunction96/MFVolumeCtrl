@@ -1,4 +1,4 @@
-﻿using MFVolumeCtrl;
+﻿using MFVolumeCtrl.Models;
 using System;
 using System.Windows;
 
@@ -28,7 +28,7 @@ namespace MFVolumeTool
         {
             var wdw = new ServiceWindow(Config.Services)
             {
-                AcConfig = (services) => Config.Services = services
+                AcConfig = services => Config.Services = services
             };
             wdw.ShowDialog();
         }

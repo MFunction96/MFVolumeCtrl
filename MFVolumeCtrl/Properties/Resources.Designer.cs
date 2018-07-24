@@ -113,5 +113,23 @@ namespace MFVolumeCtrl.Properties {
                 return ResourceManager.GetString("NonService", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to script.json.
+        /// </summary>
+        public static string ScriptFile {
+            get {
+                return ResourceManager.GetString("ScriptFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to D:\.MFVolumeCtrl.
+        /// </summary>
+        public static string ScriptPath {
+            get {
+                return ResourceManager.GetString("ScriptPath", resourceCulture);
+            }
+        }
     }
 }

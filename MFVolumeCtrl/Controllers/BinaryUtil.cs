@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace MFVolumeCtrl
+namespace MFVolumeCtrl.Controllers
 {
     public static class BinaryUtil
     {
