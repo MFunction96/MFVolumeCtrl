@@ -1,8 +1,8 @@
-﻿using MFVolumeCtrl.Models;
+﻿using MFVolumeCtrl.Interfaces;
+using MFVolumeCtrl.Models;
 using MFVolumeCtrl.Properties;
+using MFVolumeService.Controllers;
 using System.ServiceProcess;
-using MFVolumeCtrl.Interfaces;
-using MFVolumeService.Controller;
 
 namespace MFVolumeService
 {

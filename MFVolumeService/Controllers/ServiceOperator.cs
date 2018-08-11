@@ -2,7 +2,7 @@
 using MFVolumeCtrl.Controllers;
 using MFVolumeCtrl.Models;
 
-namespace MFVolumeService.Controller
+namespace MFVolumeService.Controllers
 {
     /// <inheritdoc />
     /// <summary>
