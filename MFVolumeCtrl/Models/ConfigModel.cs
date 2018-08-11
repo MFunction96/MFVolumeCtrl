@@ -3,10 +3,11 @@ using System.Collections.Generic;
 
 namespace MFVolumeCtrl.Models
 {
+    /// <inheritdoc />
     /// <summary>
     /// </summary>
     [Serializable]
-    public class ConfigModel
+    public class ConfigModel : IDisposable
     {
         /// <summary>
         /// 
@@ -43,6 +44,27 @@ namespace MFVolumeCtrl.Models
         {
             Services = new HashSet<ServiceModel>();
             Scripts = new HashSet<ScriptModel>();
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="configModel"></param>
+        public ConfigModel(ConfigModel configModel)
+        {
+            Enabled = configModel.Enabled;
+            Port = configModel.Port;
+            Activation = configModel.Activation;
+            RunScript = configModel.RunScript;
+            KmsServer = configModel.KmsServer;
+            Services = new HashSet<ServiceModel>(configModel.Services);
+            Scripts = new HashSet<ScriptModel>(configModel.Scripts);
+        }
+        /// <inheritdoc />
+        /// <summary>
+        /// </summary>
+        public void Dispose()
+        {
+
         }
     }
 }

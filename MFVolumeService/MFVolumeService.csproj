@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controller\ServiceOperator.cs" />
     <Compile Include="MfVolumeService.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -64,7 +65,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="TimeWatcher.cs" />
+    <Compile Include="Controller\TimeWatcher.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

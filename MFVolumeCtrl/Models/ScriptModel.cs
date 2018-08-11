@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace MFVolumeCtrl.Models
 {
@@ -62,24 +63,28 @@ namespace MFVolumeCtrl.Models
         /// <summary>
         /// 
         /// </summary>
-        public void Run()
+        public Task Run()
         {
-            if (Restart > 0)
+            return Task.Run(() =>
             {
-                --Restart;
-                return;
-            }
-            var process = new Process
-            {
-                StartInfo = new ProcessStartInfo
+                if (Restart > 0)
                 {
-                    FileName = FileFullPath,
-                    Arguments = Arguments,
-                    CreateNoWindow = NoWindow
+                    --Restart;
+                    return;
                 }
-            };
-            process.Start();
-            if (WaitforExit) process.WaitForExit();
+
+                var process = new Process
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = FileFullPath,
+                        Arguments = Arguments,
+                        CreateNoWindow = NoWindow
+                    }
+                };
+                process.Start();
+                if (WaitforExit) process.WaitForExit();
+            });
         }
 
         public void Dispose()

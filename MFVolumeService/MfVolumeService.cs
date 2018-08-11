@@ -1,11 +1,8 @@
-﻿using MFVolumeCtrl.Controllers;
-using MFVolumeCtrl.Models;
+﻿using MFVolumeCtrl.Models;
 using MFVolumeCtrl.Properties;
-using System;
-using System.Net;
-using System.Net.Sockets;
 using System.ServiceProcess;
-using System.Threading;
+using MFVolumeCtrl.Interfaces;
+using MFVolumeService.Controller;
 
 namespace MFVolumeService
 {
@@ -19,18 +16,15 @@ namespace MFVolumeService
         /// 
         /// </summary>
         protected string ConfigPath { get; }
+
         /// <summary>
         /// 
         /// </summary>
-        protected ConfigModel Config { get; set; }
+        protected ConfigModel Config;
         /// <summary>
         /// 
         /// </summary>
-        protected Socket Listener { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        protected Thread ListenThread { get; set; }
+        protected IServiceThread Ticker { get; set; }
         #endregion
 
         #region Initial
@@ -41,10 +35,7 @@ namespace MFVolumeService
         {
             InitializeComponent();
             ConfigPath = Resources.ConfigPath;
-            ListenThread = new Thread(Listen)
-            {
-                IsBackground = true
-            };
+            Ticker = new TimeWatcher(ref Config);
         }
         /// <summary>
         /// 
@@ -52,13 +43,13 @@ namespace MFVolumeService
         /// <param name="args"></param>
         protected void HandleArgs(string[] args)
         {
-            var port = Config.Port;
+            /*var port = Config.Port;
             for (var i = 0; i < args.Length; i++)
             {
                 if (args[i] == Properties.Resources.ArgPort) port = int.Parse(args[++i]);
-            }
-            Listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            Listener.Bind(new IPEndPoint(IPAddress.Parse(Resources.Localhost), port));
+            }*/
+            /*Listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            Listener.Bind(new IPEndPoint(IPAddress.Parse(Resources.Localhost), port));*/
         }
         #endregion
 
@@ -86,7 +77,7 @@ namespace MFVolumeService
         /// </summary>
         protected override void OnStop()
         {
-            ListenThread.Interrupt();
+            //ListenThread.Interrupt();
         }
         #endregion
         /// <summary>
@@ -108,6 +99,12 @@ namespace MFVolumeService
                     ErrorUtil.WriteError(e);
                 }
             }*/
+        }
+
+        public new void Dispose()
+        {
+            Ticker.Dispose();
+            base.Dispose();
         }
     }
 }

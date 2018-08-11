@@ -51,8 +51,8 @@
     <Compile Include="Interfaces\IServiceThread.cs" />
     <Compile Include="Models\ConfigModel.cs" />
     <Compile Include="Controllers\ErrorUtil.cs" />
-    <Compile Include="Models\ServiceThread.cs" />
-    <Compile Include="Models\SocketListener.cs" />
+    <Compile Include="Controllers\ServiceThread.cs" />
+    <Compile Include="Controllers\SocketThread.cs" />
     <Compile Include="Models\ScriptModel.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
