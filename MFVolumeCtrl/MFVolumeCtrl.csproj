@@ -48,18 +48,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\BinaryUtil.cs" />
-    <Compile Include="Models\Script\CommandModel.cs" />
+    <Compile Include="Interfaces\IServiceThread.cs" />
     <Compile Include="Models\ConfigModel.cs" />
     <Compile Include="Controllers\ErrorUtil.cs" />
-    <Compile Include="Interfaces\IConfig.cs" />
-    <Compile Include="Models\Script\ScheduleModel.cs" />
+    <Compile Include="Models\ServiceThread.cs" />
+    <Compile Include="Models\SocketListener.cs" />
+    <Compile Include="Models\ScriptModel.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Models\Script\ScriptModel.cs" />
-    <Compile Include="Models\Service\ServiceModel.cs" />
+    <Compile Include="Models\ServiceModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -71,5 +71,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

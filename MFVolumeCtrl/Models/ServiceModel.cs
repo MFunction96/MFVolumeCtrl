@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using MFVolumeCtrl.Controllers;
 using MFVolumeCtrl.Properties;
 
-namespace MFVolumeCtrl.Models.Service
+namespace MFVolumeCtrl.Models
 {
     /// <inheritdoc />
     /// <summary>
@@ -24,7 +24,7 @@ namespace MFVolumeCtrl.Models.Service
         /// <summary>
         /// 
         /// </summary>
-        public IList<string> Services { get; set; }
+        public ICollection<string> Services { get; set; }
         /// <summary>
         /// 
         /// </summary>
@@ -34,7 +34,7 @@ namespace MFVolumeCtrl.Models.Service
         /// </summary>
         public ServiceModel()
         {
-            Services = new List<string>();
+            Services = new HashSet<string>();
         }
         /// <summary>
         /// 

@@ -1,9 +1,9 @@
-﻿using MFVolumeCtrl.Models.Service;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using MFVolumeCtrl.Models;
 
 namespace MFVolumeTool
 {
@@ -16,19 +16,19 @@ namespace MFVolumeTool
         /// <summary>
         /// 
         /// </summary>
-        public Action<IList<ServiceModel>> AcConfig { get; set; }
+        public Action<ICollection<ServiceModel>> AcConfig { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        protected IList<ServiceModel> Services { get; set; }
+        protected ICollection<ServiceModel> Services { get; set; }
         /// <inheritdoc />
         /// <summary>
         /// </summary>
         /// <param name="services"></param>
-        public ServiceWindow(IList<ServiceModel> services)
+        public ServiceWindow(ICollection<ServiceModel> services)
         {
             InitializeComponent();
-            Services = services ?? new List<ServiceModel>();
+            Services = services ?? new HashSet<ServiceModel>();
         }
         /// <summary>
         /// 

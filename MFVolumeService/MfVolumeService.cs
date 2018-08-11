@@ -1,6 +1,5 @@
 ﻿using MFVolumeCtrl.Controllers;
 using MFVolumeCtrl.Models;
-using MFVolumeCtrl.Models.Service;
 using MFVolumeCtrl.Properties;
 using System;
 using System.Net;
@@ -70,7 +69,7 @@ namespace MFVolumeService
         /// <param name="args"></param>
         protected override void OnStart(string[] args)
         {
-            try
+            /*try
             {
                 Config.Read();
                 HandleArgs(args);
@@ -80,7 +79,7 @@ namespace MFVolumeService
             catch (Exception e)
             {
                 ErrorUtil.WriteError(e);
-            }
+            }*/
         }
         /// <inheritdoc />
         /// <summary>
@@ -95,7 +94,7 @@ namespace MFVolumeService
         /// </summary>
         public void Listen()
         {
-            while (Config.Enabled)
+            /*while (Config.Enabled)
             {
                 try
                 {
@@ -108,7 +107,7 @@ namespace MFVolumeService
                 {
                     ErrorUtil.WriteError(e);
                 }
-            }
+            }*/
         }
     }
 }

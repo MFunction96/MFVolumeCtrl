@@ -20,8 +20,8 @@ namespace MFVolumeTool
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
-            Config.Write();
-            MessageBox.Show(Properties.Resources.SuccessInfo);
+            /*Config.Write();
+            MessageBox.Show(Properties.Resources.SuccessInfo);*/
         }
 
         private void BtnService_Click(object sender, RoutedEventArgs e)
@@ -40,7 +40,7 @@ namespace MFVolumeTool
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            Config.Read();
+            //Config.Read();
             
         }
     }
