@@ -1,6 +1,6 @@
-﻿using System.Threading.Tasks;
-using MFVolumeCtrl.Controllers;
+﻿using MFVolumeCtrl.Controllers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Threading.Tasks;
 
 namespace MFVolumeServiceTests.Controllers
 {

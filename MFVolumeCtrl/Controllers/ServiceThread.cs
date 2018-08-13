@@ -1,5 +1,5 @@
-﻿using System.Threading;
-using MFVolumeCtrl.Interfaces;
+﻿using MFVolumeCtrl.Interfaces;
+using System.Threading;
 
 namespace MFVolumeCtrl.Controllers
 {

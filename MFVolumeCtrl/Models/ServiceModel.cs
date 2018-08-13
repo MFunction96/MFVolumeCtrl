@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MFVolumeCtrl.Controllers;
+using MFVolumeCtrl.Properties;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
@@ -6,8 +8,6 @@ using System.Runtime.InteropServices;
 using System.ServiceProcess;
 using System.Threading;
 using System.Threading.Tasks;
-using MFVolumeCtrl.Controllers;
-using MFVolumeCtrl.Properties;
 
 namespace MFVolumeCtrl.Models
 {
@@ -74,11 +74,11 @@ namespace MFVolumeCtrl.Models
         /// </summary>
         /// <param name="source"></param>
         /// <param name="countDown"></param>
-        protected void SendCallback(Socket source, int countDown)
+        protected async Task SendCallback(Socket source, int countDown)
         {
             for (var i = 0; i < countDown; i++)
             {
-                Send(source);
+                await Send(source);
                 if (CheckStatus() != Enabled)
                 {
                     Enabled = !Enabled;
@@ -94,10 +94,10 @@ namespace MFVolumeCtrl.Models
         /// <param name="source"></param>
         /// <param name="countDown"></param>
         /// <param name="status"></param>
-        public async void SetStatus(Socket source, int countDown, bool status)
+        public async Task SetStatus(Socket source, int countDown, bool status)
         {
             await SetStatus(status);
-            SendCallback(source, countDown);
+            await SendCallback(source, countDown);
         }
         /// <summary>
         /// 
@@ -113,20 +113,20 @@ namespace MFVolumeCtrl.Models
         /// <param name="source"></param>
         /// <param name="countDown"></param>
         /// <returns></returns>
-        public void SwitchStatus(Socket source, int countDown)
+        public async Task SwitchStatus(Socket source, int countDown)
         {
             SwitchStatus();
-            SendCallback(source, countDown);
+            await SendCallback(source, countDown);
         }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="socket"></param>
-        public async void Send(Socket socket)
+        public async Task Send(Socket socket)
         {
             try
             {
-                var buffer = BinaryUtil.SerializeObject(this);
+                var buffer = await BinaryUtil.SerializeObject(this);
                 socket.Send(buffer);
             }
             catch (Exception e)
@@ -139,18 +139,18 @@ namespace MFVolumeCtrl.Models
         /// </summary>
         /// <param name="socket"></param>
         /// <returns></returns>
-        public static ServiceModel Receive(Socket socket)
+        public static async Task<ServiceModel> Receive(Socket socket)
         {
             try
             {
                 var length = Marshal.SizeOf(typeof(ServiceModel));
                 var buffer = new byte[length];
                 socket.Receive(buffer, length, 0);
-                return BinaryUtil.DeserializeObject<ServiceModel>(buffer);
+                return await BinaryUtil.DeserializeObject<ServiceModel>(buffer);
             }
             catch (Exception e)
             {
-                ErrorUtil.WriteError(e);
+                await ErrorUtil.WriteError(e);
                 return null;
             }
         }

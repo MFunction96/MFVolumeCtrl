@@ -1,4 +1,4 @@
 # MfVolumeCtrl
 
-[![Build status](https://ci.appveyor.com/api/projects/status/v03a5g3q2ooxb8n0?svg=true)](https://ci.appveyor.com/project/MFunction96/edulancast)
+[![Build status](https://ci.appveyor.com/api/projects/status/8xm72g430v4x1f02?svg=true)](https://ci.appveyor.com/project/MFunction96/mfvolumectrl)
 

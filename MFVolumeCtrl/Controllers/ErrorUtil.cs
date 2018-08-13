@@ -1,6 +1,6 @@
-﻿using System;
+﻿using MFVolumeCtrl.Properties;
+using System;
 using System.Threading.Tasks;
-using MFVolumeCtrl.Properties;
 
 namespace MFVolumeCtrl.Controllers
 {
