@@ -26,8 +26,7 @@ namespace MFVolumeService.Controllers
         private ConfigModel Config { get; }
 
         #endregion
-
-
+        
         #region Construction
 
         /// <inheritdoc />

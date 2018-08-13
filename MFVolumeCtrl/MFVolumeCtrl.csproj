@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\BinaryUtil.cs" />
+    <Compile Include="Controllers\FileUtil.cs" />
     <Compile Include="Interfaces\IServiceThread.cs" />
     <Compile Include="Models\ConfigModel.cs" />
     <Compile Include="Controllers\ErrorUtil.cs" />
