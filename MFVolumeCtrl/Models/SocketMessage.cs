@@ -1,6 +1,7 @@
 ﻿using MFVolumeCtrl.Controllers;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace MFVolumeCtrl.Models
@@ -19,27 +20,58 @@ namespace MFVolumeCtrl.Models
     {
         private const int HeaderLengthIndex = 0;
 
-        private const int BodyLengthIndex = 4;
+        private const int BodyLengthIndex = sizeof(int);
 
-        private const int HeaderIndex = 8;
+        private const int HeaderIndex = sizeof(int) << 1;
+
+        private T _body;
+
+        private int _headerlength;
+
+        private int _bodylength;
 
         private int BodyIndex => HeaderIndex + HeaderLength;
 
-        public int HeaderLength { get; set; }
+        public int HeaderLength
+        {
+            get
+            {
+                _headerlength = Marshal.SizeOf(Headers);
+                return _headerlength;
+            }
+            set => _headerlength = value;
+        }
 
-        public int BodyLength { get; set; }
+        public int BodyLength
+        {
+            get
+            {
+                _bodylength = Body == null ? 0 : Marshal.SizeOf(Body);
+                return _bodylength;
+            }
+            set => _bodylength = value;
+        }
 
         public Dictionary<string, object> Headers { get; set; }
 
-        public T Body { get; set; }
+        public T Body
+        {
+            get => _body;
+            set
+            {
+                _body = value;
+                _bodylength = value == null ? 0 : Marshal.SizeOf(value);
+            }
+        }
 
         public SocketMessage()
         {
-
+            Headers = new Dictionary<string, object>();
         }
 
         public SocketMessage(byte[] binary)
         {
+            Headers = new Dictionary<string, object>();
             ParseBinaryAsync(binary).GetAwaiter().GetResult();
         }
 

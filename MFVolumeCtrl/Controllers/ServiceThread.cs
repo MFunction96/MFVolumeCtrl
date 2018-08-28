@@ -27,7 +27,6 @@ namespace MFVolumeCtrl.Controllers
         {
             try
             {
-
                 MainThread.Start();
             }
             catch (Exception e)

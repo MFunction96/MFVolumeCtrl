@@ -61,13 +61,6 @@ namespace MFVolumeCtrl.Controllers
         /// 请在此方法内初始化Socket。
         /// </summary>
         protected abstract void Initialization();
-        /// <summary>
-        /// 已接收请求的反馈。
-        /// </summary>
-        /// <param name="asyncResult">
-        /// 异步请求结果。
-        /// </param>
-        protected abstract void Callback(IAsyncResult asyncResult);
 
         #endregion
 

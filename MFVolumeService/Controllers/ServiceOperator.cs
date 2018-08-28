@@ -3,9 +3,7 @@ using MFVolumeCtrl.Models;
 using System;
 using System.Linq;
 using System.Net;
-using System.Net.Sockets;
 using System.ServiceProcess;
-using System.Threading.Tasks;
 
 namespace MFVolumeService.Controllers
 {
@@ -22,6 +20,7 @@ namespace MFVolumeService.Controllers
         #endregion
 
         #region Construction
+
         /// <inheritdoc />
         /// <summary>
         /// </summary>
@@ -43,53 +42,58 @@ namespace MFVolumeService.Controllers
         /// </summary>
         public override void Operation()
         {
-            Socketv4.BeginAccept(Callback, Socketv4);
+            while (true)
+            {
+                var client = Socketv4.Accept();
+                var binary = new byte[client.SendBufferSize];
+                client.Receive(binary);
+                try
+                {
+                    using (var message = new SocketMessage<ServiceGroupModel>())
+                    {
+                        message.ParseBinaryAsync(binary).GetAwaiter().GetResult();
+                        HandleServices(message);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Message.Body = e;
+                }
+                finally
+                {
+                    client.Send(BinaryUtil.SerializeObject(Message).GetAwaiter().GetResult());
+                }
+
+                client.Close();
+            }
+            // ReSharper disable once FunctionNeverReturns
         }
-        
+
         /// <inheritdoc />
         /// <summary>
         /// </summary>
         protected sealed override void Initialization()
         {
             Socketv4.Bind(new IPEndPoint(IPAddress.Any, Config.Port));
+            
             //Socketv6.Bind(new IPEndPoint(IPAddress.IPv6Any, Config.Port));
             Socketv4.Listen(Config.PendingQueue);
             //Socketv6.Listen(Config.PendingQueue);
-            MainThread.Start();
-        }
-
-        protected override void Callback(IAsyncResult asyncResult)
-        {
-            if (!(asyncResult.AsyncState is Socket server))
-                throw new ArgumentNullException(nameof(asyncResult));
-            var client = server.EndAccept(asyncResult);
-            client.Send(BinaryUtil.SerializeObject(Message).GetAwaiter().GetResult());
-            // ReSharper disable once FunctionNeverReturns
         }
 
         #endregion
 
         #region Private
 
-        private async Task HandleServices(byte[] request)
+        private static void HandleServices(SocketMessage<ServiceGroupModel> request)
         {
-            try
+            var services = ServiceController.GetServices();
+            foreach (var service in request.Body.Services)
             {
-                using (var serviceModel = await BinaryUtil.DeserializeObject<ServiceGroupModel>(request))
-                {
-                    var services = ServiceController.GetServices();
-                    foreach (var service in serviceModel.Services)
-                    {
-                        var controller = services.FirstOrDefault(tmp => tmp.ServiceName == service);
-                        if (controller is null) throw new NullReferenceException($"There is no : {service}");
-                        if (serviceModel.Enabled) controller.Start();
-                        else controller.Stop();
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                // ignore
+                var controller = services.FirstOrDefault(tmp => tmp.ServiceName == service);
+                if (controller is null) throw new NullReferenceException($"There is no : {service}");
+                if (request.Body.Enabled) controller.Start();
+                else controller.Stop();
             }
         }
 
