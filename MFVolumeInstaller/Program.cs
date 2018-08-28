@@ -4,8 +4,8 @@
     {
         static void Main(string[] args)
         {
-            var installer = new Installer(args);
-            installer.Run();
+            //var installer = new Installer(args);
+            //installer.Run();
         }
     }
 }

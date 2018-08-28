@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace MFVolumeCtrl.Controllers
@@ -23,17 +24,30 @@ namespace MFVolumeCtrl.Controllers
                 return buffer;
             });
         }
+
         /// <summary>
         /// 
         /// </summary>
         /// <typeparam name="TType"></typeparam>
         /// <param name="binary"></param>
+        /// <param name="startIndex"></param>
+        /// <param name="length"></param>
         /// <returns></returns>
-        public static Task<TType> DeserializeObject<TType>(byte[] binary)
+        public static Task<TType> DeserializeObject<TType>(byte[] binary, int startIndex = 0, int length = 0)
         {
             return Task.Run(() =>
             {
-                var ptr = Marshal.UnsafeAddrOfPinnedArrayElement(binary, 0);
+                byte[] tmp;
+                if (length == 0)
+                {
+                    tmp = binary;
+                }
+                else
+                {
+                    tmp = new byte[length];
+                    Array.Copy(binary, startIndex, tmp, 0, length);
+                }
+                var ptr = Marshal.UnsafeAddrOfPinnedArrayElement(tmp, 0);
                 return Marshal.PtrToStructure<TType>(ptr);
             });
         }

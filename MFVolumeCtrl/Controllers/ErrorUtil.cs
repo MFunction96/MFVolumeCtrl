@@ -8,7 +8,7 @@ namespace MFVolumeCtrl.Controllers
     {
         public static async Task WriteError(Exception e)
         {
-            var path = $"{Resources.ConfigPath}\\{Resources.ErrorFile}";
+            const string path = @"C:\ProgramData\MFVolumeCtrl\\error.log";
             await FileUtil.ExportObj(e, path, true);
         }
     }

@@ -1,4 +1,6 @@
-﻿using System.Net.Sockets;
+﻿using System;
+using System.Net.Sockets;
+using MFVolumeCtrl.Models;
 
 namespace MFVolumeCtrl.Controllers
 {
@@ -17,6 +19,10 @@ namespace MFVolumeCtrl.Controllers
         /// Ipv6协议Socket。
         /// </summary>
         protected Socket Socketv6 { get; set; }
+        /// <summary>
+        /// 请求或反馈信息。
+        /// </summary>
+        public SocketMessage<object> Message { get; set; }
         #endregion
 
         #region Construction
@@ -27,8 +33,9 @@ namespace MFVolumeCtrl.Controllers
         /// </summary>
         protected SocketThread()
         {
-            Socketv4 = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IPv4);
-            Socketv6 = new Socket(AddressFamily.InterNetworkV6, SocketType.Stream, ProtocolType.IPv6);
+            Socketv4 = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            Socketv6 = new Socket(AddressFamily.InterNetworkV6, SocketType.Stream, ProtocolType.Tcp);
+            MainThread.IsBackground = true;
         }
 
         #endregion
@@ -54,6 +61,13 @@ namespace MFVolumeCtrl.Controllers
         /// 请在此方法内初始化Socket。
         /// </summary>
         protected abstract void Initialization();
+        /// <summary>
+        /// 已接收请求的反馈。
+        /// </summary>
+        /// <param name="asyncResult">
+        /// 异步请求结果。
+        /// </param>
+        protected abstract void Callback(IAsyncResult asyncResult);
 
         #endregion
 

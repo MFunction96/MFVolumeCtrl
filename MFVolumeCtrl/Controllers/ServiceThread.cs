@@ -1,4 +1,5 @@
-﻿using MFVolumeCtrl.Interfaces;
+﻿using System;
+using MFVolumeCtrl.Interfaces;
 using System.Threading;
 
 namespace MFVolumeCtrl.Controllers
@@ -24,7 +25,16 @@ namespace MFVolumeCtrl.Controllers
         /// <inheritdoc />
         public void Start()
         {
-            MainThread.Start();
+            try
+            {
+
+                MainThread.Start();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
         /// <inheritdoc />
         public void Interrupt()

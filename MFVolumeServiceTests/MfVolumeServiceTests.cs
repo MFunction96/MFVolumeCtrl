@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using MFVolumeService;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MFVolumeServiceTests
 {
@@ -8,7 +9,8 @@ namespace MFVolumeServiceTests
         [TestMethod()]
         public void MfVolumeServiceTest()
         {
-            //Assert.Fail();
+            //var service = new MfVolumeService();
+            
         }
     }
 }

@@ -32,7 +32,11 @@ namespace MFVolumeCtrl.Models
         /// <summary>
         /// 
         /// </summary>
-        public ICollection<ServiceModel> Services { get; set; }
+        public int PendingQueue { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICollection<ServiceGroupModel> Services { get; set; }
         /// <summary>
         /// 
         /// </summary>
@@ -42,7 +46,7 @@ namespace MFVolumeCtrl.Models
         /// </summary>
         public ConfigModel()
         {
-            Services = new HashSet<ServiceModel>();
+            Services = new HashSet<ServiceGroupModel>();
             Scripts = new HashSet<ScriptModel>();
         }
         /// <summary>
@@ -56,7 +60,8 @@ namespace MFVolumeCtrl.Models
             Activation = configModel.Activation;
             RunScript = configModel.RunScript;
             KmsServer = configModel.KmsServer;
-            Services = new HashSet<ServiceModel>(configModel.Services);
+            PendingQueue = configModel.PendingQueue;
+            Services = new HashSet<ServiceGroupModel>(configModel.Services);
             Scripts = new HashSet<ScriptModel>(configModel.Scripts);
         }
         /// <inheritdoc />

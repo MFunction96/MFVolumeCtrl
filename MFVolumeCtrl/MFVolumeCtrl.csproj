@@ -50,6 +50,7 @@
     <Compile Include="Controllers\BinaryUtil.cs" />
     <Compile Include="Controllers\FileUtil.cs" />
     <Compile Include="Interfaces\IServiceThread.cs" />
+    <Compile Include="Models\SocketMessage.cs" />
     <Compile Include="Models\ConfigModel.cs" />
     <Compile Include="Controllers\ErrorUtil.cs" />
     <Compile Include="Controllers\ServiceThread.cs" />
@@ -60,7 +61,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Models\ServiceModel.cs" />
+    <Compile Include="Models\ServiceGroupModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -72,6 +73,8 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

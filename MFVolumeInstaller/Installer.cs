@@ -32,7 +32,7 @@ namespace MFVolumeInstaller
         /// </summary>
         protected void Uninstall()
         {
-            try
+            /*try
             {
                 ServiceController.GetServices().First(sv => sv.ServiceName == Properties.Resources.MFVolumeService).Stop();
             }
@@ -68,14 +68,14 @@ namespace MFVolumeInstaller
 
             var dir = new DirectoryInfo(MFVolumeCtrl.Properties.Resources.ConfigPath);
             if (!dir.Exists) return;
-            dir.Delete(true);
+            dir.Delete(true);*/
         }
         /// <summary>
         /// 
         /// </summary>
         protected void Install()
         {
-            var dir = new DirectoryInfo(Environment.CurrentDirectory);
+            /*var dir = new DirectoryInfo(Environment.CurrentDirectory);
             var des = new DirectoryInfo(Properties.Resources.ProgramPath);
             if (!des.Exists)
             {
@@ -113,7 +113,7 @@ namespace MFVolumeInstaller
             }
             Console.WriteLine(line);
             process.WaitForExit();
-            ServiceController.GetServices().First(sv => sv.ServiceName == Properties.Resources.MFVolumeService).Start();
+            ServiceController.GetServices().First(sv => sv.ServiceName == Properties.Resources.MFVolumeService).Start();*/
         }
         /// <summary>
         /// 

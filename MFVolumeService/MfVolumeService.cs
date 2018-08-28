@@ -1,8 +1,10 @@
-﻿using MFVolumeCtrl.Interfaces;
+﻿using System;
+using MFVolumeCtrl.Interfaces;
 using MFVolumeCtrl.Models;
 using MFVolumeCtrl.Properties;
 using MFVolumeService.Controllers;
 using System.ServiceProcess;
+using MFVolumeCtrl.Controllers;
 
 namespace MFVolumeService
 {
@@ -15,16 +17,15 @@ namespace MFVolumeService
         /// <summary>
         /// 
         /// </summary>
-        protected string ConfigPath { get; }
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected ConfigModel Config;
         /// <summary>
         /// 
         /// </summary>
         protected IServiceThread Ticker { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        protected IServiceThread ServiceCtrl { get; set; }
         #endregion
 
         #region Initial
@@ -34,22 +35,8 @@ namespace MFVolumeService
         public MfVolumeService()
         {
             InitializeComponent();
-            ConfigPath = Resources.ConfigPath;
-            Ticker = new TimeWatcher(ref Config);
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="args"></param>
-        protected void HandleArgs(string[] args)
-        {
-            /*var port = Config.Port;
-            for (var i = 0; i < args.Length; i++)
-            {
-                if (args[i] == Properties.Resources.ArgPort) port = int.Parse(args[++i]);
-            }*/
-            /*Listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            Listener.Bind(new IPEndPoint(IPAddress.Parse(Resources.Localhost), port));*/
+            Config = FileUtil.ImportObj<ConfigModel>(@"C:\ProgramData\MFVolumeCtrl\config.json").GetAwaiter().GetResult();
+            //Ticker = new TimeWatcher(ref Config);
         }
         #endregion
 
@@ -60,50 +47,28 @@ namespace MFVolumeService
         /// <param name="args"></param>
         protected override void OnStart(string[] args)
         {
-            /*try
+            try
             {
-                Config.Read();
-                HandleArgs(args);
-                Config.Initialize();
-                ListenThread.Start();
+                ServiceCtrl = new ServiceOperator(ref Config);
+                ServiceCtrl.Start();
             }
             catch (Exception e)
             {
-                ErrorUtil.WriteError(e);
-            }*/
+                Console.WriteLine(e);
+                throw;
+            }
         }
         /// <inheritdoc />
         /// <summary>
         /// </summary>
         protected override void OnStop()
         {
-            //ListenThread.Interrupt();
+            ServiceCtrl.Interrupt();
         }
         #endregion
-        /// <summary>
-        /// 
-        /// </summary>
-        public void Listen()
-        {
-            /*while (Config.Enabled)
-            {
-                try
-                {
-                    var client = Listener.Accept();
-                    var service = ServiceModel.Receive(client);
-                    service.SetStatus(client, Config.CountDown, service.Enabled);
-                    client.Close();
-                }
-                catch (Exception e)
-                {
-                    ErrorUtil.WriteError(e);
-                }
-            }*/
-        }
-
         public new void Dispose()
         {
-            Ticker.Dispose();
+            ServiceCtrl.Dispose();
             base.Dispose();
         }
     }

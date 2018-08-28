@@ -1,6 +1,11 @@
 ﻿using MFVolumeCtrl.Controllers;
 using MFVolumeCtrl.Models;
 using System;
+using System.Linq;
+using System.Net;
+using System.Net.Sockets;
+using System.ServiceProcess;
+using System.Threading.Tasks;
 
 namespace MFVolumeService.Controllers
 {
@@ -24,6 +29,7 @@ namespace MFVolumeService.Controllers
         public ServiceOperator(ref ConfigModel configModel)
         {
             Config = configModel;
+            Initialization();
         }
 
         #endregion
@@ -37,14 +43,54 @@ namespace MFVolumeService.Controllers
         /// </summary>
         public override void Operation()
         {
-            throw new NotImplementedException();
+            Socketv4.BeginAccept(Callback, Socketv4);
         }
+        
         /// <inheritdoc />
         /// <summary>
         /// </summary>
-        protected override void Initialization()
+        protected sealed override void Initialization()
         {
-            throw new NotImplementedException();
+            Socketv4.Bind(new IPEndPoint(IPAddress.Any, Config.Port));
+            //Socketv6.Bind(new IPEndPoint(IPAddress.IPv6Any, Config.Port));
+            Socketv4.Listen(Config.PendingQueue);
+            //Socketv6.Listen(Config.PendingQueue);
+            MainThread.Start();
+        }
+
+        protected override void Callback(IAsyncResult asyncResult)
+        {
+            if (!(asyncResult.AsyncState is Socket server))
+                throw new ArgumentNullException(nameof(asyncResult));
+            var client = server.EndAccept(asyncResult);
+            client.Send(BinaryUtil.SerializeObject(Message).GetAwaiter().GetResult());
+            // ReSharper disable once FunctionNeverReturns
+        }
+
+        #endregion
+
+        #region Private
+
+        private async Task HandleServices(byte[] request)
+        {
+            try
+            {
+                using (var serviceModel = await BinaryUtil.DeserializeObject<ServiceGroupModel>(request))
+                {
+                    var services = ServiceController.GetServices();
+                    foreach (var service in serviceModel.Services)
+                    {
+                        var controller = services.FirstOrDefault(tmp => tmp.ServiceName == service);
+                        if (controller is null) throw new NullReferenceException($"There is no : {service}");
+                        if (serviceModel.Enabled) controller.Start();
+                        else controller.Stop();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                // ignore
+            }
         }
 
         #endregion

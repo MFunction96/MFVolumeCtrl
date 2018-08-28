@@ -16,19 +16,19 @@ namespace MFVolumeTool
         /// <summary>
         /// 
         /// </summary>
-        public Action<ICollection<ServiceModel>> AcConfig { get; set; }
+        public Action<ICollection<ServiceGroupModel>> AcConfig { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        protected ICollection<ServiceModel> Services { get; set; }
+        protected ICollection<ServiceGroupModel> Services { get; set; }
         /// <inheritdoc />
         /// <summary>
         /// </summary>
         /// <param name="services"></param>
-        public ServiceWindow(ICollection<ServiceModel> services)
+        public ServiceWindow(ICollection<ServiceGroupModel> services)
         {
             InitializeComponent();
-            Services = services ?? new HashSet<ServiceModel>();
+            Services = services ?? new HashSet<ServiceGroupModel>();
         }
         /// <summary>
         /// 
@@ -75,7 +75,7 @@ namespace MFVolumeTool
                     CbEnabled.IsChecked = true;
                     BtnModifyGroup.IsEnabled = true;
                     BtnDeleteGroup.IsEnabled = true;
-                    Services.Add(new ServiceModel
+                    Services.Add(new ServiceGroupModel
                     {
                         Nickname = str,
                         Enabled = true
@@ -101,7 +101,7 @@ namespace MFVolumeTool
                     Services.Remove(selected);
                     CbGroup.Items.Remove(selected.Nickname);
 
-                    Services.Add(new ServiceModel
+                    Services.Add(new ServiceGroupModel
                     {
                         Nickname = str,
                         Enabled = CbEnabled.IsChecked ?? true,
