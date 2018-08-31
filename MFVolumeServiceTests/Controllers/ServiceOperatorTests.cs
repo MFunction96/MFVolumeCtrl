@@ -1,4 +1,5 @@
-﻿using MFVolumeCtrl.Controllers;
+﻿using System;
+using MFVolumeCtrl.Controllers;
 using MFVolumeCtrl.Models;
 using MFVolumeService.Controllers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -11,18 +12,35 @@ namespace MFVolumeServiceTests.Controllers
         [TestMethod()]
         public void ServiceOperatorTest()
         {
-            var config = FileUtil.ImportObj<ConfigModel>(@"C:\ProgramData\MFVolumeCtrl\config.json").GetAwaiter().GetResult();
-            //Ticker = new TimeWatcher(ref Config);
-            var servicectrl = new ServiceOperator(config);
-            //servicectrl.Start();
-            //servicectrl.Interrupt();
+            try
+            {
+                var config = FileUtil.ImportObj<ConfigModel>(@"C:\ProgramData\MFVolumeCtrl\config.json").GetAwaiter().GetResult();
+                //Ticker = new TimeWatcher(ref Config);
+                var servicectrl = new ServiceOperator(config);
+                //servicectrl.Start();
+                //servicectrl.Interrupt();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            
         }
 
         [TestMethod()]
         public void OperationTest()
         {
-            var config = FileUtil.ImportObj<ConfigModel>(@"C:\ProgramData\MFVolumeCtrl\config.json").GetAwaiter().GetResult();
-            var op = new ServiceOperator(config);
+            try
+            {
+                var config = FileUtil.ImportObj<ConfigModel>(@"C:\ProgramData\MFVolumeCtrl\config.json").GetAwaiter().GetResult();
+                var op = new ServiceOperator(config);
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            
         }
     }
 }
