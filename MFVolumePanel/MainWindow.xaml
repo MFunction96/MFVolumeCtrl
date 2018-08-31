@@ -7,17 +7,17 @@
         Title="MainWindow" Height="210.267" Width="311.6" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
     <Grid Margin="0,0,-0.4,-0.4">
         <Grid Margin="10,10,10,0" Height="113.6" VerticalAlignment="Top">
-            <Label Content="服务状态：" Margin="61.999,10,62.008,0" VerticalAlignment="Top"/>
-            <Label Content="激活服务器：" Margin="50.266,71.92,62.008,0" VerticalAlignment="Top"/>
-            <Label Content="自激活状态：" Margin="50.266,40.96,62.008,0" VerticalAlignment="Top"/>
+            <Label x:Name="LblServiceStatus" Content="服务状态：" Margin="46,10,31.6,0" VerticalAlignment="Top"/>
+            <Label x:Name="LblKmsServer" Content="激活服务器：" Margin="35,72,31.6,0" VerticalAlignment="Top"/>
+            <Label x:Name="LblActivate" Content="自激活状态：" Margin="35,41,31.6,0" VerticalAlignment="Top"/>
         </Grid>
         <Grid Margin="10,123.6,10,0" Height="43" VerticalAlignment="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <ToggleButton x:Name="TogBtn" Content="" Grid.Column="1" Margin="10,10,10,13.44" d:LayoutOverrides="Height" Checked="TogBtn_Checked"/>
-            <ComboBox Grid.Column="0" x:Name="CbGroup" Margin="10,10,10,11.44" d:LayoutOverrides="Height"/>
+            <ToggleButton x:Name="TogBtn" Content="" Grid.Column="1" Margin="10,10,10,13.44" d:LayoutOverrides="Height" Click="TogBtn_Click"/>
+            <ComboBox Grid.Column="0" x:Name="CbGroup" Margin="10,10,10,11.44" d:LayoutOverrides="Height" SelectionChanged="CbGroup_SelectionChanged"/>
         </Grid>
 
     </Grid>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace MFVolumeCtrl.Models
 {
@@ -7,6 +8,7 @@ namespace MFVolumeCtrl.Models
     /// <summary>
     /// </summary>
     [Serializable]
+    [StructLayout(LayoutKind.Sequential)]
     public class ConfigModel : IDisposable
     {
         /// <summary>

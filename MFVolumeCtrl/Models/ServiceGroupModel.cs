@@ -1,13 +1,6 @@
-﻿using MFVolumeCtrl.Controllers;
-using MFVolumeCtrl.Properties;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Sockets;
 using System.Runtime.InteropServices;
-using System.ServiceProcess;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace MFVolumeCtrl.Models
 {
@@ -15,6 +8,7 @@ namespace MFVolumeCtrl.Models
     /// <summary>
     /// </summary>
     [Serializable]
+    [StructLayout(LayoutKind.Sequential)]
     public class ServiceGroupModel : IDisposable
     {
         /// <summary>

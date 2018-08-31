@@ -49,7 +49,7 @@ namespace MFVolumeService
         {
             try
             {
-                ServiceCtrl = new ServiceOperator(ref Config);
+                ServiceCtrl = new ServiceOperator(Config);
                 ServiceCtrl.Start();
             }
             catch (Exception e)

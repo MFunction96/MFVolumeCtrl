@@ -13,15 +13,16 @@ namespace MFVolumeServiceTests.Controllers
         {
             var config = FileUtil.ImportObj<ConfigModel>(@"C:\ProgramData\MFVolumeCtrl\config.json").GetAwaiter().GetResult();
             //Ticker = new TimeWatcher(ref Config);
-            var servicectrl = new ServiceOperator(ref config);
-            servicectrl.Start();
-            servicectrl.Interrupt();
+            var servicectrl = new ServiceOperator(config);
+            //servicectrl.Start();
+            //servicectrl.Interrupt();
         }
 
         [TestMethod()]
         public void OperationTest()
         {
-            
+            var config = FileUtil.ImportObj<ConfigModel>(@"C:\ProgramData\MFVolumeCtrl\config.json").GetAwaiter().GetResult();
+            var op = new ServiceOperator(config);
         }
     }
 }

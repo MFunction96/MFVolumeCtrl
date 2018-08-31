@@ -3,6 +3,7 @@ using MFVolumeCtrl.Models;
 using System;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using System.ServiceProcess;
 
 namespace MFVolumeService.Controllers
@@ -25,7 +26,7 @@ namespace MFVolumeService.Controllers
         /// <summary>
         /// </summary>
         /// <param name="configModel"></param>
-        public ServiceOperator(ref ConfigModel configModel)
+        public ServiceOperator(ConfigModel configModel)
         {
             Config = configModel;
             Initialization();
@@ -49,19 +50,22 @@ namespace MFVolumeService.Controllers
                 client.Receive(binary);
                 try
                 {
-                    using (var message = new SocketMessage<ServiceGroupModel>())
+                    using (var message = BinaryUtil.DeserializeObject<SocketMessage>(binary))
                     {
-                        message.ParseBinaryAsync(binary).GetAwaiter().GetResult();
+                        if (message.Headers.BodyType != typeof(ServiceGroupModel)
+                            && message.Headers.MessageType != MessageType.ServiceMsg)
+                            throw new SocketException();
                         HandleServices(message);
                     }
                 }
                 catch (Exception e)
                 {
                     Message.Body = e;
+                    ErrorUtil.WriteError(e).GetAwaiter().GetResult();
                 }
                 finally
                 {
-                    client.Send(BinaryUtil.SerializeObject(Message).GetAwaiter().GetResult());
+                    //client.Send(BinaryUtil.SerializeObject(Message));
                 }
 
                 client.Close();
@@ -75,7 +79,7 @@ namespace MFVolumeService.Controllers
         protected sealed override void Initialization()
         {
             Socketv4.Bind(new IPEndPoint(IPAddress.Any, Config.Port));
-            
+
             //Socketv6.Bind(new IPEndPoint(IPAddress.IPv6Any, Config.Port));
             Socketv4.Listen(Config.PendingQueue);
             //Socketv6.Listen(Config.PendingQueue);
@@ -85,14 +89,16 @@ namespace MFVolumeService.Controllers
 
         #region Private
 
-        private static void HandleServices(SocketMessage<ServiceGroupModel> request)
+        private static void HandleServices(SocketMessage request)
         {
             var services = ServiceController.GetServices();
-            foreach (var service in request.Body.Services)
+            if (!(request.Body is ServiceGroupModel servicegroup))
+                throw new ArgumentNullException(nameof(servicegroup));
+            foreach (var service in servicegroup.Services)
             {
                 var controller = services.FirstOrDefault(tmp => tmp.ServiceName == service);
                 if (controller is null) throw new NullReferenceException($"There is no : {service}");
-                if (request.Body.Enabled) controller.Start();
+                if (servicegroup.Enabled) controller.Start();
                 else controller.Stop();
             }
         }

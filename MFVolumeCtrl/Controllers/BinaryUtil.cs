@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace MFVolumeCtrl.Controllers
 {
@@ -14,15 +14,14 @@ namespace MFVolumeCtrl.Controllers
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public static Task<byte[]> SerializeObject(object obj)
+        public static byte[] SerializeObject(object obj)
         {
-            return Task.Run(() =>
+            using (var stream = new MemoryStream())
             {
-                var buffer = new byte[Marshal.SizeOf(obj)];
-                var ptr = Marshal.UnsafeAddrOfPinnedArrayElement(buffer, 0);
-                Marshal.StructureToPtr(obj, ptr, true);
-                return buffer;
-            });
+                var formatter = new BinaryFormatter();
+                formatter.Serialize(stream, obj);
+                return stream.GetBuffer();
+            }
         }
 
         /// <summary>
@@ -33,23 +32,23 @@ namespace MFVolumeCtrl.Controllers
         /// <param name="startIndex"></param>
         /// <param name="length"></param>
         /// <returns></returns>
-        public static Task<TType> DeserializeObject<TType>(byte[] binary, int startIndex = 0, int length = 0)
+        public static TType DeserializeObject<TType>(byte[] binary, int startIndex = 0, int length = 0)
         {
-            return Task.Run(() =>
+            byte[] tmp;
+            if (length == 0)
             {
-                byte[] tmp;
-                if (length == 0)
-                {
-                    tmp = binary;
-                }
-                else
-                {
-                    tmp = new byte[length];
-                    Array.Copy(binary, startIndex, tmp, 0, length);
-                }
-                var ptr = Marshal.UnsafeAddrOfPinnedArrayElement(tmp, 0);
-                return Marshal.PtrToStructure<TType>(ptr);
-            });
+                tmp = binary;
+            }
+            else
+            {
+                tmp = new byte[length];
+                Array.Copy(binary, startIndex, tmp, 0, length);
+            }
+            using (var stream = new MemoryStream(tmp))
+            {
+                var formatter = new BinaryFormatter();
+                return (TType)formatter.Deserialize(stream);
+            }
         }
     }
 }

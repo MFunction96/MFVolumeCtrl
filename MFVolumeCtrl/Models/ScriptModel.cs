@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace MFVolumeCtrl.Models
@@ -18,6 +19,7 @@ namespace MFVolumeCtrl.Models
     /// <summary>
     /// </summary>
     [Serializable]
+    [StructLayout(LayoutKind.Sequential)]
     public class ScriptModel : IDisposable
     {
         /// <summary>

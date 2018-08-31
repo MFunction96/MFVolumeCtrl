@@ -1,6 +1,5 @@
-﻿using System;
+﻿using MFVolumeCtrl.Models;
 using System.Net.Sockets;
-using MFVolumeCtrl.Models;
 
 namespace MFVolumeCtrl.Controllers
 {
@@ -22,7 +21,7 @@ namespace MFVolumeCtrl.Controllers
         /// <summary>
         /// 请求或反馈信息。
         /// </summary>
-        public SocketMessage<object> Message { get; set; }
+        public SocketMessage Message { get; set; }
         #endregion
 
         #region Construction
@@ -35,6 +34,7 @@ namespace MFVolumeCtrl.Controllers
         {
             Socketv4 = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             Socketv6 = new Socket(AddressFamily.InterNetworkV6, SocketType.Stream, ProtocolType.Tcp);
+            Message = new SocketMessage();
             MainThread.IsBackground = true;
         }
 
