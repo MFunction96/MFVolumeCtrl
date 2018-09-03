@@ -1,10 +1,33 @@
-﻿using MFVolumeCtrl.Controllers;
-using System;
-using System.Collections.Generic;
+﻿using System;
+using System.Net.Sockets;
 using System.Runtime.InteropServices;
+using MFVolumeCtrl.Controllers;
 
 namespace MFVolumeCtrl.Models
 {
+    // State object for reading client data asynchronously  
+    public class StateObject
+    {
+        // Client  socket.  
+        public Socket WorkSocket;
+        // Size of receive buffer.  
+        public int BufferSize;
+        // Receive buffer.  
+        public byte[] Buffer;
+        /// <summary>
+        /// 
+        /// </summary>
+        public int ReceiveSize;
+
+        public StateObject(Socket socket, ConfigModel config)
+        {
+            WorkSocket = socket;
+            BufferSize = config.BufferSize;
+            Buffer = new byte[BufferSize];
+            ReceiveSize = 0;
+        }
+    }
+
     public enum MessageType : byte
     {
         ConfigMsg = 0,

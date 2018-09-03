@@ -34,6 +34,10 @@ namespace MFVolumeCtrl.Models
         /// <summary>
         /// 
         /// </summary>
+        public int BufferSize { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public int PendingQueue { get; set; }
         /// <summary>
         /// 

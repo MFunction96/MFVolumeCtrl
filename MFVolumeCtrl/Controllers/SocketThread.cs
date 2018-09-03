@@ -1,5 +1,6 @@
 ﻿using MFVolumeCtrl.Models;
 using System.Net.Sockets;
+using System.Threading;
 
 namespace MFVolumeCtrl.Controllers
 {
@@ -22,6 +23,7 @@ namespace MFVolumeCtrl.Controllers
         /// 请求或反馈信息。
         /// </summary>
         public SocketMessage Message { get; set; }
+
         #endregion
 
         #region Construction

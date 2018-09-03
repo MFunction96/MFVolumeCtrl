@@ -15,7 +15,7 @@ namespace MFVolumePanel
     {
         public ConfigModel Config { get; }
 
-        public SocketThread SocketSerivce { get; protected set; }
+        public SocketThread SocketService { get; protected set; }
 
         public MainWindow()
         {
@@ -23,7 +23,6 @@ namespace MFVolumePanel
             Config = FileUtil
                 .ImportObj<ConfigModel>($"{Properties.Resources.ConfigPath}\\{Properties.Resources.ConfigName}")
                 .GetAwaiter().GetResult();
-            SocketSerivce = new ServiceSocket(Config);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -55,19 +54,20 @@ namespace MFVolumePanel
         {
             TogBtn.IsChecked = Config.Services.FirstOrDefault(tmp =>
                 tmp.Nickname == CbGroup.SelectedItem.ToString())?.Enabled;
+            TogBtn.Content = TogBtn.IsChecked ?? false ? "停止服务" : "启用服务";
         }
 
         private void TogBtn_Click(object sender, RoutedEventArgs e)
         {
-            var flag = TogBtn.IsChecked ?? false;
             var service = Config.Services.FirstOrDefault(tmp => tmp.Nickname == CbGroup.SelectedItem.ToString());
             if (service == null) throw new NullReferenceException();
-            service.Enabled = flag;
-            SocketSerivce.Message.Headers.MessageType = MessageType.ServiceMsg;
-            SocketSerivce.Message.Body = service;
-            SocketSerivce.Message.Headers.BodyType = typeof(ServiceGroupModel);
-            SocketSerivce.Start();
-            TogBtn.IsChecked = !TogBtn.IsChecked;
+            service.Enabled = TogBtn.IsChecked ?? false;
+            SocketService = new ServiceSocket(Config);
+            SocketService.Message.Headers.MessageType = MessageType.ServiceMsg;
+            SocketService.Message.Body = service;
+            SocketService.Message.Headers.BodyType = typeof(ServiceGroupModel);
+            SocketService.Operation();
+            TogBtn.Content = TogBtn.IsChecked ?? false ? "停止服务" : "启用服务";
         }
 
 
