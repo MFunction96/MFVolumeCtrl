@@ -1,10 +1,9 @@
-﻿using System;
+﻿using MFVolumeCtrl.Controllers;
 using MFVolumeCtrl.Interfaces;
 using MFVolumeCtrl.Models;
-using MFVolumeCtrl.Properties;
 using MFVolumeService.Controllers;
+using System;
 using System.ServiceProcess;
-using MFVolumeCtrl.Controllers;
 
 namespace MFVolumeService
 {
@@ -35,7 +34,7 @@ namespace MFVolumeService
         public MfVolumeService()
         {
             InitializeComponent();
-            Config = FileUtil.ImportObj<ConfigModel>(@"C:\ProgramData\MFVolumeCtrl\config.json").GetAwaiter().GetResult();
+            Config = FileUtil.ImportObj<ConfigModel>($"{ConfigModel.ConfigPath}\\{ConfigModel.ConfigName}").GetAwaiter().GetResult();
             //Ticker = new TimeWatcher(ref Config);
         }
         #endregion

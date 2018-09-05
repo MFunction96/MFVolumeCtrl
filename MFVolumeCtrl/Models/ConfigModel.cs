@@ -11,6 +11,11 @@ namespace MFVolumeCtrl.Models
     [StructLayout(LayoutKind.Sequential)]
     public class ConfigModel : IDisposable
     {
+        public const string ConfigPath = @"C:\ProgramData\MFVolumeCtrl";
+
+        public const string ConfigName = @"config.json";
+
+        public const string ErrorName = @"error.log";
         /// <summary>
         /// 
         /// </summary>

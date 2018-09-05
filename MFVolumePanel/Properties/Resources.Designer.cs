@@ -59,32 +59,5 @@ namespace MFVolumePanel.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to config.json.
-        /// </summary>
-        internal static string ConfigName {
-            get {
-                return ResourceManager.GetString("ConfigName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to C:\ProgramData\MFVolumeCtrl.
-        /// </summary>
-        internal static string ConfigPath {
-            get {
-                return ResourceManager.GetString("ConfigPath", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to error.json.
-        /// </summary>
-        internal static string ErrorName {
-            get {
-                return ResourceManager.GetString("ErrorName", resourceCulture);
-            }
-        }
     }
 }

@@ -59,14 +59,5 @@ namespace MFVolumeService.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to --port.
-        /// </summary>
-        internal static string ArgPort {
-            get {
-                return ResourceManager.GetString("ArgPort", resourceCulture);
-            }
-        }
     }
 }

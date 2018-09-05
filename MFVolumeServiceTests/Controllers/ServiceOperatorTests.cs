@@ -14,7 +14,8 @@ namespace MFVolumeServiceTests.Controllers
         {
             try
             {
-                var config = FileUtil.ImportObj<ConfigModel>(@"C:\ProgramData\MFVolumeCtrl\config.json").GetAwaiter().GetResult();
+                var config = FileUtil.ImportObj<ConfigModel>($"{ConfigModel.ConfigPath}\\{ConfigModel.ConfigName}")
+                    .GetAwaiter().GetResult();
                 //Ticker = new TimeWatcher(ref Config);
                 var servicectrl = new ServiceOperator(config);
                 //servicectrl.Start();
@@ -32,7 +33,8 @@ namespace MFVolumeServiceTests.Controllers
         {
             try
             {
-                var config = FileUtil.ImportObj<ConfigModel>(@"C:\ProgramData\MFVolumeCtrl\config.json").GetAwaiter().GetResult();
+                var config = FileUtil.ImportObj<ConfigModel>($"{ConfigModel.ConfigPath}\\{ConfigModel.ConfigName}")
+                    .GetAwaiter().GetResult();
                 var op = new ServiceOperator(config);
 
             }

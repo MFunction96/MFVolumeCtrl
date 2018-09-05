@@ -1,4 +1,4 @@
-﻿using MFVolumeCtrl.Properties;
+﻿using MFVolumeCtrl.Models;
 using System;
 using System.Threading.Tasks;
 
@@ -8,7 +8,7 @@ namespace MFVolumeCtrl.Controllers
     {
         public static async Task WriteError(Exception e)
         {
-            const string path = @"C:\ProgramData\MFVolumeCtrl\\error.log";
+            var path = $"{ConfigModel.ConfigPath}\\{ConfigModel.ErrorName}";
             await FileUtil.ExportObj(e, path, true);
         }
     }
