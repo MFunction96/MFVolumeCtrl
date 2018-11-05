@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using MFVolumeCtrl.Controllers;
 using MFVolumeCtrl.Models;
 
-namespace MFVolumeService.Controllers
+namespace MFVolumeService.Controllers.Watchers
 {
     /// <inheritdoc />
     /// <summary>
@@ -56,7 +56,7 @@ namespace MFVolumeService.Controllers
                     config = new ConfigModel(Config);
                 }
 
-                RunScript(config).GetAwaiter().GetResult();
+                RunScript(config);
 
                 config.Dispose();
                 Thread.Sleep(Interval);
@@ -76,13 +76,13 @@ namespace MFVolumeService.Controllers
         /// <returns>
         /// 异步运行结果。
         /// </returns>
-        private static async Task RunScript(ConfigModel configModel)
+        private static void RunScript(ConfigModel configModel)
         {
             if (!configModel.RunScript) return;
             var scripts = configModel.Scripts.Where(tmp => tmp.StartTime.Minute == DateTime.Now.Minute);
             foreach (var script in scripts)
             {
-                await script.Run();
+                script.Run();
             }
         }
 

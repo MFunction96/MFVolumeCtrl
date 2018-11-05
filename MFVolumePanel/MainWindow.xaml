@@ -19,6 +19,11 @@
             <ToggleButton x:Name="TogBtn" Content="" Grid.Column="1" Margin="10,10,10,13.44" d:LayoutOverrides="Height" Click="TogBtn_Click"/>
             <ComboBox Grid.Column="0" x:Name="CbGroup" Margin="10,10,10,11.44" d:LayoutOverrides="Height" SelectionChanged="CbGroup_SelectionChanged"/>
         </Grid>
+        <ProgressBar Height="4.867" Margin="10,0,10,10" VerticalAlignment="Bottom">
+            <ProgressBar.BindingGroup>
+                <BindingGroup/>
+            </ProgressBar.BindingGroup>
+        </ProgressBar>
 
     </Grid>
 </Window>

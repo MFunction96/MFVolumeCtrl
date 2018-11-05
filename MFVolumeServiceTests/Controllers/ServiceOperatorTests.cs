@@ -1,8 +1,9 @@
-﻿using System;
-using MFVolumeCtrl.Controllers;
+﻿using MFVolumeCtrl.Controllers;
 using MFVolumeCtrl.Models;
-using MFVolumeService.Controllers;
+using MFVolumeService.Controllers.Operators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using MFVolumeService.Controllers.Threads;
 
 namespace MFVolumeServiceTests.Controllers
 {
@@ -17,7 +18,7 @@ namespace MFVolumeServiceTests.Controllers
                 var config = FileUtil.ImportObj<ConfigModel>($"{ConfigModel.ConfigPath}\\{ConfigModel.ConfigName}")
                     .GetAwaiter().GetResult();
                 //Ticker = new TimeWatcher(ref Config);
-                var servicectrl = new ServiceOperator(config);
+                var servicectrl = new NetworkThread(config);
                 //servicectrl.Start();
                 //servicectrl.Interrupt();
             }
@@ -35,7 +36,7 @@ namespace MFVolumeServiceTests.Controllers
             {
                 var config = FileUtil.ImportObj<ConfigModel>($"{ConfigModel.ConfigPath}\\{ConfigModel.ConfigName}")
                     .GetAwaiter().GetResult();
-                var op = new ServiceOperator(config);
+                var op = new NetworkThread(config);
 
             }
             catch (Exception e)

@@ -1,7 +1,7 @@
 ﻿using MFVolumeCtrl.Controllers;
 using MFVolumeCtrl.Interfaces;
 using MFVolumeCtrl.Models;
-using MFVolumeService.Controllers;
+using MFVolumeService.Controllers.Threads;
 using System;
 using System.ServiceProcess;
 
@@ -48,7 +48,7 @@ namespace MFVolumeService
         {
             try
             {
-                ServiceCtrl = new ServiceOperator(Config);
+                ServiceCtrl = new NetworkThread(Config);
                 ServiceCtrl.Start();
             }
             catch (Exception e)

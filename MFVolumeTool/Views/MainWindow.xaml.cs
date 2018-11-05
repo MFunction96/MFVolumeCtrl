@@ -1,8 +1,8 @@
-﻿using MFVolumeCtrl.Models;
-using System;
+﻿using System;
 using System.Windows;
+using MFVolumeCtrl.Models;
 
-namespace MFVolumeTool
+namespace MFVolumeTool.Views
 {
     /// <inheritdoc cref="Window" />
     /// <summary>
@@ -10,7 +10,7 @@ namespace MFVolumeTool
     /// </summary>
     public partial class MainWindow : Window
     {
-        public ConfigModel Config { get; set; }
+        protected ConfigModel Config;
 
         public MainWindow()
         {
@@ -42,6 +42,15 @@ namespace MFVolumeTool
         {
             //Config.Read();
             
+        }
+
+        private void BtnSchedule_Click(object sender, RoutedEventArgs e)
+        {
+            var wdw = new ScheduleWindow(Config.Scripts)
+            {
+                AcScript = scripts => Config.Scripts = scripts
+            };
+            wdw.ShowDialog();
         }
     }
 }

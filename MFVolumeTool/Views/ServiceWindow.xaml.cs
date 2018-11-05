@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using MFVolumeCtrl.Models;
 
-namespace MFVolumeTool
+namespace MFVolumeTool.Views
 {
     /// <inheritdoc cref="Window" />
     /// <summary>

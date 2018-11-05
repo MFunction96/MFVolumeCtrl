@@ -76,5 +76,11 @@
   <ItemGroup>
     <Folder Include="Resources\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PInvoke\PInvoke.csproj">
+      <Project>{D73001B8-3B54-487E-8387-9667ACCF01A7}</Project>
+      <Name>PInvoke</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

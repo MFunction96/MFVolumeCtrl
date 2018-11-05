@@ -1,7 +1,7 @@
-﻿using System;
+﻿using PInvoke.Models;
+using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 
 namespace MFVolumeCtrl.Models
 {
@@ -49,6 +49,10 @@ namespace MFVolumeCtrl.Models
         /// <summary>
         /// 
         /// </summary>
+        public ProcessEx Process { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public string FileFullPath { get; set; }
         /// <summary>
         /// 
@@ -65,28 +69,25 @@ namespace MFVolumeCtrl.Models
         /// <summary>
         /// 
         /// </summary>
-        public Task Run()
+        public void Run()
         {
-            return Task.Run(() =>
+            if (Restart > 0)
             {
-                if (Restart > 0)
-                {
-                    --Restart;
-                    return;
-                }
+                --Restart;
+                return;
+            }
 
-                var process = new Process
+            var process = new Process
+            {
+                StartInfo = new ProcessStartInfo
                 {
-                    StartInfo = new ProcessStartInfo
-                    {
-                        FileName = FileFullPath,
-                        Arguments = Arguments,
-                        CreateNoWindow = NoWindow
-                    }
-                };
-                process.Start();
-                if (WaitforExit) process.WaitForExit();
-            });
+                    FileName = FileFullPath,
+                    Arguments = Arguments,
+                    CreateNoWindow = NoWindow
+                }
+            };
+            process.Start();
+            if (WaitforExit) process.WaitForExit();
         }
 
         public void Dispose()

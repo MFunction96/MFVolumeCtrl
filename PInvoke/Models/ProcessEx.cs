@@ -1,7 +1,7 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using PInvoke.Methods;
+﻿using PInvoke.Methods;
 using PInvoke.Structures;
+using System;
+using System.Runtime.InteropServices;
 
 namespace PInvoke.Models
 {
@@ -21,19 +21,12 @@ namespace PInvoke.Models
         /// <summary>
         /// 
         /// </summary>
-        protected STARTUPINFO Startupinfo;
+        public STARTUPINFO StartupInfo;
+
         /// <summary>
         /// 
         /// </summary>
-        public STARTUPINFO StartupInfo
-        {
-            get => Startupinfo;
-            set => Startupinfo = value;
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        public PROCESS_INFORMATION ProcessInformation { get; set; }
+        public PROCESS_INFORMATION ProcessInformation;
         /// <summary>
         /// 
         /// </summary>
@@ -45,7 +38,7 @@ namespace PInvoke.Models
         /// <summary>
         /// 
         /// </summary>
-        public void Start()
+        public void Start(int milliSeconds = 0)
         {
             if (string.IsNullOrEmpty(AppPath)) throw new InvalidOperationException();
             var cmd = $"{AppPath} {Arguments}";
@@ -64,18 +57,19 @@ namespace PInvoke.Models
             sat.nLength = Marshal.SizeOf(sat);
             var ptrsat = MemoryCtrl.CopyMemoryEx(sat);
             if (!NativeMethods.CreateProcess(null, cmd, ptrsap, ptrsat, true, 0, IntPtr.Zero, null,
-                ref Startupinfo, out var pi))
+                ref StartupInfo, out ProcessInformation))
                 throw new Exception($"Error!\nCode: {NativeMethods.GetLastError()}");
 
-            ProcessInformation = pi;
             MemoryCtrl.FreeMemoryEx(ptrsat);
             MemoryCtrl.FreeMemoryEx(ptrsap);
+
+            if (milliSeconds > 0) WaitForExit(milliSeconds);
         }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="milliSeconds"></param>
-        public void WaitforExit(int milliSeconds)
+        protected void WaitForExit(int milliSeconds)
         {
             NativeMethods.WaitForSingleObjectEx(ProcessInformation.hProcess, 0, false);
         }
@@ -84,7 +78,7 @@ namespace PInvoke.Models
         /// </summary>
         public void Dispose()
         {
-            Startupinfo.Dispose();
+            StartupInfo.Dispose();
             ProcessInformation.Dispose();
         }
     }

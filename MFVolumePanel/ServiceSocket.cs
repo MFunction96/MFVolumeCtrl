@@ -34,12 +34,12 @@ namespace MFVolumePanel
                 _connectDone.WaitOne();
 
                 // Send test data to the remote device.  
-                Send(Socketv4);
+                Send(Socketv4, Message);
                 _sendDone.WaitOne();
 
                 // Receive the response from the remote device.  
-                //Receive(Socketv4);
-                //_receiveDone.WaitOne();
+                Receive(Socketv4);
+                _receiveDone.WaitOne();
 
                 // Write the response to the console.  
                 //Console.WriteLine("Response received : {0}", response);
@@ -54,50 +54,7 @@ namespace MFVolumePanel
             }
         }
 
-/*        private static void StartClient()
-        {
-            // Connect to a remote device.  
-            try
-            {
-                // Establish the remote endpoint for the socket.  
-                // The name of the   
-                // remote device is "host.contoso.com".  
-                IPHostEntry ipHostInfo = Dns.GetHostEntry("host.contoso.com");
-                IPAddress ipAddress = ipHostInfo.AddressList[0];
-                IPEndPoint remoteEP = new IPEndPoint(ipAddress, port);
-
-                // Create a TCP/IP socket.  
-                Socket client = new Socket(ipAddress.AddressFamily,
-                    SocketType.Stream, ProtocolType.Tcp);
-
-                // Connect to the remote endpoint.  
-                client.BeginConnect(remoteEP,
-                    new AsyncCallback(ConnectCallback), client);
-                _connectDone.WaitOne();
-
-                // Send test data to the remote device.  
-                Send(client, "This is a test<EOF>");
-                _sendDone.WaitOne();
-
-                // Receive the response from the remote device.  
-                Receive(client);
-                _receiveDone.WaitOne();
-
-                // Write the response to the console.  
-                Console.WriteLine("Response received : {0}", response);
-
-                // Release the socket.  
-                client.Shutdown(SocketShutdown.Both);
-                client.Close();
-
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-            }
-        }*/
-
-        private void ConnectCallback(IAsyncResult ar)
+        protected override void ConnectCallback(IAsyncResult ar)
         {
             try
             {
@@ -117,7 +74,7 @@ namespace MFVolumePanel
             }
         }
 
-        private void Receive(Socket client)
+        protected override void Receive(Socket client)
         {
             try
             {
@@ -134,7 +91,7 @@ namespace MFVolumePanel
             }
         }
 
-        private void ReceiveCallback(IAsyncResult ar)
+        protected override void ReceiveCallback(IAsyncResult ar)
         {
             try
             {
@@ -146,25 +103,6 @@ namespace MFVolumePanel
                 // Read data from the remote device.  
                 state.ReceiveSize = client.EndReceive(ar);
 
-/*                if (bytesRead > 0)
-                {
-                    // There might be more data, so store the data received so far.  
-                    state.sb.Append(Encoding.ASCII.GetString(state.buffer, 0, bytesRead));
-
-                    // Get the rest of the data.  
-                    client.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
-                        new AsyncCallback(ReceiveCallback), state);
-                }
-                else
-                {
-                    // All the data has arrived; put it in response.  
-                    if (state.sb.Length > 1)
-                    {
-                        response = state.sb.ToString();
-                    }
-                    // Signal that all bytes have been received.  
-                    _receiveDone.Set();
-                }*/
             }
             catch (Exception e)
             {
@@ -172,17 +110,17 @@ namespace MFVolumePanel
             }
         }
 
-        private void Send(Socket client)
+        protected override void Send(Socket handler, SocketMessage message)
         {
             // Convert the string data to byte data using ASCII encoding.  
             var byteData = BinaryUtil.SerializeObject(Message);
 
             // Begin sending the data to the remote device.  
-            client.BeginSend(byteData, 0, byteData.Length, 0,
-                SendCallback, client);
+            handler.BeginSend(byteData, 0, byteData.Length, 0,
+                SendCallback, handler);
         }
 
-        private void SendCallback(IAsyncResult ar)
+        protected override void SendCallback(IAsyncResult ar)
         {
             try
             {
@@ -228,6 +166,11 @@ namespace MFVolumePanel
         protected override void Initialization()
         {
             
+        }
+
+        protected override void AcceptCallback(IAsyncResult ar)
+        {
+            throw new NotImplementedException();
         }
     }
 }

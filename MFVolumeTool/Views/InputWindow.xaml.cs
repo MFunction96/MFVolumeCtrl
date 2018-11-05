@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace MFVolumeTool
+namespace MFVolumeTool.Views
 {
     /// <inheritdoc cref="Window" />
     /// <summary>

@@ -46,7 +46,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\ServiceOperator.cs" />
+    <Compile Include="Controllers\Operators\ScriptOperator.cs" />
+    <Compile Include="Controllers\Operators\ServiceOperator.cs" />
+    <Compile Include="Controllers\Threads\NetworkThread.cs" />
+    <Compile Include="Interfaces\IOperator.cs" />
     <Compile Include="MfVolumeService.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -66,7 +69,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Controllers\TimeWatcher.cs" />
+    <Compile Include="Controllers\Watchers\TimeWatcher.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -75,6 +78,10 @@
     <ProjectReference Include="..\MFVolumeCtrl\MFVolumeCtrl.csproj">
       <Project>{f4327b5f-30da-46e4-9d09-b4cf1bb1dc05}</Project>
       <Name>MFVolumeCtrl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PInvoke\PInvoke.csproj">
+      <Project>{d73001b8-3b54-487e-8387-9667accf01a7}</Project>
+      <Name>PInvoke</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

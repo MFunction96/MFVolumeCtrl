@@ -1,6 +1,6 @@
 ﻿using MFVolumeCtrl.Models;
+using System;
 using System.Net.Sockets;
-using System.Threading;
 
 namespace MFVolumeCtrl.Controllers
 {
@@ -63,6 +63,18 @@ namespace MFVolumeCtrl.Controllers
         /// 请在此方法内初始化Socket。
         /// </summary>
         protected abstract void Initialization();
+
+        protected abstract void ConnectCallback(IAsyncResult ar);
+
+        protected abstract void AcceptCallback(IAsyncResult ar);
+
+        protected abstract void Receive(Socket client);
+
+        protected abstract void ReceiveCallback(IAsyncResult ar);
+
+        protected abstract void Send(Socket handler, SocketMessage message);
+
+        protected abstract void SendCallback(IAsyncResult ar);
 
         #endregion
 
