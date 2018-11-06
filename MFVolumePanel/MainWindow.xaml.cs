@@ -1,8 +1,10 @@
 ﻿using MFVolumeCtrl.Controllers;
 using MFVolumeCtrl.Models;
 using System;
+using System.ComponentModel;
 using System.Linq;
 using System.ServiceProcess;
+using System.Threading;
 using System.Windows;
 
 namespace MFVolumePanel
@@ -15,7 +17,7 @@ namespace MFVolumePanel
     {
         public ConfigModel Config { get; }
 
-        public SocketThread SocketService { get; protected set; }
+        protected BackgroundWorker Workers { get; set; }
 
         public MainWindow()
         {
@@ -30,6 +32,7 @@ namespace MFVolumePanel
             {
                 ErrorUtil.WriteError(e).GetAwaiter().GetResult();
             }
+            Workers = new BackgroundWorker();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -37,6 +40,15 @@ namespace MFVolumePanel
             try
             {
                 var services = ServiceController.GetServices();
+
+                var host = services.FirstOrDefault(tmp => tmp.ServiceName == "MFVolumeService");
+                if (host is null || host.Status != ServiceControllerStatus.Running)
+                {
+                    MessageBox.Show("MFVolumeService未启用！请先启动MFVolumeService服务！", "错误", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+                    Environment.Exit(0);
+                }
+
                 foreach (var service in Config.Services)
                 {
                     CbGroup.Items.Add(service.Nickname);
@@ -57,12 +69,18 @@ namespace MFVolumePanel
                 LblActivate.Content += Config.Activation ? "启用" : "关闭";
                 LblKmsServer.Content += Config.KmsServer;
                 CbGroup.SelectedIndex = 0;
+                
             }
             catch (Exception exception)
             {
                 ErrorUtil.WriteError(exception).GetAwaiter().GetResult();
             }
-            
+
+            Workers.WorkerReportsProgress = true;
+            Workers.WorkerSupportsCancellation = true;
+            Workers.DoWork += SendCmd;
+            Workers.ProgressChanged += ProgressChanged;
+            Workers.RunWorkerCompleted += ProgressCompleted;
         }
 
         private void CbGroup_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -76,16 +94,10 @@ namespace MFVolumePanel
         {
             try
             {
-                var service = Config.Services.FirstOrDefault(tmp => tmp.Nickname == CbGroup.SelectedItem.ToString());
-                if (service == null) throw new NullReferenceException();
-                service.Enabled = TogBtn.IsChecked ?? false;
-                SocketService = new ServiceSocket(Config);
-                SocketService.Message.Headers.MessageType = MessageType.ServiceMsg;
-                SocketService.Message.Body = service;
-                SocketService.Message.Headers.BodyType = typeof(ServiceGroupModel);
-                SocketService.Operation();
-                MessageBox.Show("操作执行成功!", "消息", MessageBoxButton.OK);
-                TogBtn.Content = TogBtn.IsChecked ?? false ? "停止服务" : "启用服务";
+                Workers.RunWorkerAsync((TogBtn.IsChecked ?? false, Config, CbGroup.SelectedItem.ToString()));
+                PbWait.IsIndeterminate = true;
+                CbGroup.IsEnabled = false;
+                TogBtn.IsEnabled = false;
             }
             catch (Exception exception)
             {
@@ -94,6 +106,70 @@ namespace MFVolumePanel
             
         }
 
+        private void SendCmd(object sender, DoWorkEventArgs e)
+        {
+            if (sender is BackgroundWorker worker)
+            {
+                if (e.Argument is ValueTuple<bool, ConfigModel, string> tuple)
+                {
+                    var service = tuple.Item2.Services.FirstOrDefault(tmp => tmp.Nickname == tuple.Item3);
+                    if (service == null) throw new NullReferenceException();
+                    service.Enabled = tuple.Item1;
+                    var socketService = new ServiceSocket(tuple.Item2);
+                    socketService.Message.Headers.MessageType = MessageType.ServiceMsg;
+                    socketService.Message.Body = service;
 
+                    socketService.Message.Headers.BodyType = typeof(ServiceGroupModel);
+
+                    socketService.Operation();
+
+                    var countdown = Config.CheckCount;
+                    while (countdown > 0)
+                    {
+                        var s = ServiceController.GetServices();
+                        var flag = true;
+                        foreach (var serviceName in service.Services)
+                        {
+                            var target = s.FirstOrDefault(tmp => tmp.ServiceName == serviceName);
+                            if (target is null) throw new NullReferenceException(nameof(target));
+                            if ((target.Status == ServiceControllerStatus.Running && tuple.Item1) ||
+                                (target.Status == ServiceControllerStatus.Stopped && !tuple.Item1)) continue;
+                            flag = false;
+                            break;
+                        }
+                        if (flag) break;
+                        countdown--;
+                        worker.ReportProgress(countdown);
+                        Thread.Sleep(1000);
+                    }
+                }
+                else throw new ArgumentException(nameof(e));
+            }
+            else
+            {
+                throw new ArgumentException(nameof(e));
+            }
+            
+        }
+
+        private void ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            TogBtn.Content = $"{e.ProgressPercentage}";
+        }
+
+        private void ProgressCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (e.Cancelled)
+            {
+                MessageBox.Show(e.Result.ToString());
+                return;
+            }
+
+            PbWait.IsIndeterminate = false;
+            TogBtn.IsEnabled = true;
+            CbGroup.IsEnabled = true;
+            MessageBox.Show("操作执行成功!", "消息", MessageBoxButton.OK);
+            TogBtn.Content = TogBtn.IsChecked ?? false ? "停止服务" : "启用服务";
+        }
     }
 }

@@ -47,6 +47,10 @@ namespace MFVolumeCtrl.Models
         /// <summary>
         /// 
         /// </summary>
+        public int CheckCount { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public ICollection<ServiceGroupModel> Services { get; set; }
         /// <summary>
         /// 

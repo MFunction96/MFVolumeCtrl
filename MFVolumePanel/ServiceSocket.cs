@@ -103,6 +103,8 @@ namespace MFVolumePanel
                 // Read data from the remote device.  
                 state.ReceiveSize = client.EndReceive(ar);
 
+                // Signal that the receive has been made.  
+                _receiveDone.Set();
             }
             catch (Exception e)
             {
@@ -129,6 +131,8 @@ namespace MFVolumePanel
                 // Complete sending the data to the remote device.  
                 if (ar.AsyncState is Socket client)
                 {
+                    //Receive(client);
+
                     client.EndSend(ar);
                     //.WriteLine("Sent {0} bytes to server.", bytesSent);
                 }

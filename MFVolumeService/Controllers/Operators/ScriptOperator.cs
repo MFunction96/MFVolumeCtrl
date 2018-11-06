@@ -25,7 +25,15 @@ namespace MFVolumeService.Controllers.Operators
         public SocketMessage Operate()
         {
             Script.Run();
-            return new SocketMessage();
+            return new SocketMessage
+            {
+                Body = Script,
+                Headers =
+                {
+                    BodyType = typeof(ScriptModel),
+                    MessageType = MessageType.ResponseMsg
+                }
+            };
         }
     }
 }
