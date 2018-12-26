@@ -13,6 +13,7 @@ namespace MFVolumeTool.Views
     /// </summary>
     public partial class ServiceWindow
     {
+        private const string InputBoxContent = "请输入服务名称";
         /// <summary>
         /// 
         /// </summary>
@@ -67,7 +68,7 @@ namespace MFVolumeTool.Views
         /// <param name="e"></param>
         private void BtnAddGroup_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new InputWindow(string.Empty)
+            var dialog = new InputWindow(InputBoxContent, string.Empty)
             {
                 AcAddItem = str =>
                 {
@@ -92,11 +93,11 @@ namespace MFVolumeTool.Views
         /// <param name="e"></param>
         private void BtnModifyGroup_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new InputWindow(CbGroup.SelectionBoxItem.ToString())
+            var dialog = new InputWindow(InputBoxContent, CbGroup.SelectionBoxItem.ToString())
             {
                 AcAddItem = str =>
                 {
-                    var selected = Services.First(tmp => tmp.Nickname == CbGroup.SelectedValue.ToString());
+                    var selected = Services.First(tmp => tmp.Nickname == CbGroup.SelectedItem.ToString());
                     var services = selected.Services;
                     Services.Remove(selected);
                     CbGroup.Items.Remove(selected.Nickname);
@@ -139,7 +140,7 @@ namespace MFVolumeTool.Views
         /// <param name="e"></param>
         private void BtnAddService_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new InputWindow(string.Empty)
+            var dialog = new InputWindow(InputBoxContent, string.Empty)
             {
                 AcAddItem = str =>
                 {
@@ -157,7 +158,7 @@ namespace MFVolumeTool.Views
         /// <param name="e"></param>
         private void BtnModifyService_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new InputWindow(LbService.Items[LbService.SelectedIndex].ToString())
+            var dialog = new InputWindow(InputBoxContent, LbService.SelectedItem.ToString())
             {
                 AcAddItem = str => LbService.Items[LbService.SelectedIndex] = str
             };

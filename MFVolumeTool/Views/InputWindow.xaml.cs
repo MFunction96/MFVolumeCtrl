@@ -11,15 +11,16 @@ namespace MFVolumeTool.Views
     {
         public Action<string> AcAddItem { get; set; }
 
-        public InputWindow(string text)
+        public InputWindow(string content, string inputBox)
         {
             InitializeComponent();
-            TbSerivce.Text = text;
+            LbContent.Content = content;
+            TbInput.Text = inputBox;
         }
 
         private void BtnConfirm_Click(object sender, RoutedEventArgs e)
         {
-            AcAddItem(TbSerivce.Text);
+            AcAddItem(TbInput.Text);
             Close();
         }
 
@@ -30,7 +31,7 @@ namespace MFVolumeTool.Views
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            TbSerivce.Focus();
+            TbInput.Focus();
         }
     }
 }

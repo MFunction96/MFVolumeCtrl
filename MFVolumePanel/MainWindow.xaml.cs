@@ -19,6 +19,8 @@ namespace MFVolumePanel
 
         protected BackgroundWorker Workers { get; set; }
 
+        protected BackgroundWorkWindow BgwWindow { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -33,6 +35,7 @@ namespace MFVolumePanel
                 ErrorUtil.WriteError(e).GetAwaiter().GetResult();
             }
             Workers = new BackgroundWorker();
+            BgwWindow = new BackgroundWorkWindow();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -78,7 +81,7 @@ namespace MFVolumePanel
 
             Workers.WorkerReportsProgress = true;
             Workers.WorkerSupportsCancellation = true;
-            Workers.DoWork += SendCmd;
+            Workers.DoWork += DoProgress;
             Workers.ProgressChanged += ProgressChanged;
             Workers.RunWorkerCompleted += ProgressCompleted;
         }
@@ -95,9 +98,10 @@ namespace MFVolumePanel
             try
             {
                 Workers.RunWorkerAsync((TogBtn.IsChecked ?? false, Config, CbGroup.SelectedItem.ToString()));
-                PbWait.IsIndeterminate = true;
+                BgwWindow.ShowDialog();
+                /*PbWait.IsIndeterminate = true;
                 CbGroup.IsEnabled = false;
-                TogBtn.IsEnabled = false;
+                TogBtn.IsEnabled = false;*/
             }
             catch (Exception exception)
             {
@@ -106,14 +110,14 @@ namespace MFVolumePanel
             
         }
 
-        private void SendCmd(object sender, DoWorkEventArgs e)
+        private void DoProgress(object sender, DoWorkEventArgs e)
         {
             if (sender is BackgroundWorker worker)
             {
                 if (e.Argument is ValueTuple<bool, ConfigModel, string> tuple)
                 {
                     var service = tuple.Item2.Services.FirstOrDefault(tmp => tmp.Nickname == tuple.Item3);
-                    if (service == null) throw new NullReferenceException();
+                    if (service == null) throw new NullReferenceException(nameof(service));
                     service.Enabled = tuple.Item1;
                     var socketService = new ServiceSocket(tuple.Item2);
                     socketService.Message.Headers.MessageType = MessageType.ServiceMsg;
@@ -154,7 +158,8 @@ namespace MFVolumePanel
 
         private void ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            TogBtn.Content = $"{e.ProgressPercentage}";
+            //TogBtn.Content = $"{e.ProgressPercentage}";
+            BgwWindow.SetMessage(e.ProgressPercentage.ToString());
         }
 
         private void ProgressCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -164,10 +169,10 @@ namespace MFVolumePanel
                 MessageBox.Show(e.Result.ToString());
                 return;
             }
-
-            PbWait.IsIndeterminate = false;
+            BgwWindow.Close();
+            /*PbWait.IsIndeterminate = false;
             TogBtn.IsEnabled = true;
-            CbGroup.IsEnabled = true;
+            CbGroup.IsEnabled = true;*/
             MessageBox.Show("操作执行成功!", "消息", MessageBoxButton.OK);
             TogBtn.Content = TogBtn.IsChecked ?? false ? "停止服务" : "启用服务";
         }

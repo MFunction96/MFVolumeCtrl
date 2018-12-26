@@ -86,7 +86,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BackgroundWorkWindow.xaml.cs">
+      <DependentUpon>BackgroundWorkWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ServiceSocket.cs" />
+    <Page Include="BackgroundWorkWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

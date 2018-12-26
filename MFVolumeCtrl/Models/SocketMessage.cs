@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
-using MFVolumeCtrl.Controllers;
 
 namespace MFVolumeCtrl.Models
 {

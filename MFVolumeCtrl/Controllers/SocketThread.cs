@@ -1,9 +1,56 @@
 ﻿using MFVolumeCtrl.Models;
 using System;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
 
 namespace MFVolumeCtrl.Controllers
 {
+    #region SocketEventArgs
+
+    public abstract class ConnectCallbackEventArgs : IDisposable
+    {
+        public void Dispose()
+        {
+        }
+    }
+
+    public abstract class AcceptCallbackEventArgs : IDisposable
+    {
+        public void Dispose()
+        {
+        }
+    }
+
+    public abstract class ReceiveEventArgs : IDisposable
+    {
+        public void Dispose()
+        {
+        }
+    }
+
+    public abstract class ReceiveCallbackEventArgs : IDisposable
+    {
+        public void Dispose()
+        {
+        }
+    }
+
+    public abstract class SendEventArgs : IDisposable
+    {
+        public void Dispose()
+        {
+        }
+    }
+
+    public abstract class SendCallbackEventArgs : IDisposable
+    {
+        public void Dispose()
+        {
+        }
+    }
+
+    #endregion
+    
     /// <inheritdoc />
     /// <summary>
     /// Socket线程。用于Socket相关任务线程，
@@ -23,6 +70,18 @@ namespace MFVolumeCtrl.Controllers
         /// 请求或反馈信息。
         /// </summary>
         public SocketMessage Message { get; set; }
+
+        public event EventHandler<ConnectCallbackEventArgs> ConnectCallbackHandler;
+
+        public event EventHandler<AcceptCallbackEventArgs> AcceptCallbackHandler;
+
+        public event EventHandler<ReceiveEventArgs> ReceiveHandler;
+
+        public event EventHandler<ReceiveCallbackEventArgs> ReceiveCallbackHandler;
+
+        public event EventHandler<SendEventArgs> SendHandler;
+
+        public event EventHandler<SendCallbackEventArgs> SendCallbackHandler;
 
         #endregion
 

@@ -78,6 +78,7 @@ namespace MFVolumeCtrl.Models
             PendingQueue = configModel.PendingQueue;
             Services = new HashSet<ServiceGroupModel>(configModel.Services);
             Scripts = new HashSet<ScriptModel>(configModel.Scripts);
+            CheckCount = configModel.CheckCount;
         }
         /// <inheritdoc />
         /// <summary>
